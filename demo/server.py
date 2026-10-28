@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) 2026 张庆涛（日照职业技术大学 智能冶金系 工业互联网）. All rights reserved.
 """维修百事通 MVP HTTP 服务（Python 标准库）。
 
 用法：

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) 2026 张庆涛（日照职业技术大学 智能冶金系 工业互联网）. All rights reserved.
 """运行时持久化：SQLite（WAL）优先，兼容旧 JSONL。
 
 生产默认 WXBST_STORAGE=sqlite，数据库默认 runtime/wxbst.db；

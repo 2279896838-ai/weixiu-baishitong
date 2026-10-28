@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) 2026 张庆涛（日照职业技术大学 智能冶金系 工业互联网）. All rights reserved.
 """集中配置与生产启动校验。
 
 环境变量：

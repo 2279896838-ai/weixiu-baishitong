@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) 2026 张庆涛（日照职业技术大学 智能冶金系 工业互联网）. All rights reserved.
 """轻量向量检索（可选远端 Embedding，默认离线哈希向量）。
 
 - 默认：字符 n-gram 哈希向量（512 维），无需第三方依赖、无需联网；

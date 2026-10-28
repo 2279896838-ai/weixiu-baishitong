@@ -1,3 +1,4 @@
+# Copyright (c) 2026 张庆涛（日照职业技术大学 智能冶金系 工业互联网）. All rights reserved.
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """维修百事通 MVP 引擎（Python 3 标准库实现）。
