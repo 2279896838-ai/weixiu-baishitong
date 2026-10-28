@@ -2012,3 +2012,38 @@ body.modal-open { overflow: hidden; }
 @media (max-width: 900px) {
   #panel-qa iframe { height: calc(100vh - 110px); min-height: 620px; border-radius: 10px; }
 }
+
+/* 知识库 / 案例库 */
+.kb-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.kb-actions .text-input { min-width: 220px; }
+.kb-summary { margin: 6px 0 14px; color: #5b6b80; font-size: 13px; }
+.kb-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 14px; }
+.kb-card { background: #fff; border: 1px solid #dce6f2; border-radius: 12px; padding: 16px 18px; box-shadow: 0 6px 18px rgba(15, 45, 92, .05); }
+.kb-card-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.kb-card-title { display: flex; flex-direction: column; gap: 4px; }
+.kb-card-title h3 { margin: 0; font-size: 16px; color: #16355f; line-height: 1.4; }
+.kb-code { font-size: 11px; color: #7a8ca3; letter-spacing: .04em; }
+.kb-source { flex: 0 0 auto; font-size: 11px; padding: 3px 8px; border-radius: 999px; background: #eef4ff; color: #235ea8; }
+.kb-source.src-teacher_interview { background: #fff7e6; color: #9a5b00; }
+.kb-source.src-manual { background: #eef4ff; color: #235ea8; }
+.kb-source.src-workorder { background: #eaf7ef; color: #1e7a45; }
+.kb-symptom { margin: 10px 0 8px; color: #354a65; font-size: 13px; line-height: 1.7; }
+.kb-meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: #72839a; margin-bottom: 10px; }
+.kb-sec { color: #b42318; background: #fff1f0; border-radius: 999px; padding: 1px 8px; }
+.kb-block { margin-top: 10px; }
+.kb-block-title { font-size: 12px; font-weight: 700; color: #1f4e9c; margin-bottom: 6px; }
+.kb-cause { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; color: #354a65; line-height: 1.6; margin-bottom: 4px; }
+.kb-cause .prob { flex: 0 0 auto; }
+.kb-action { font-size: 12.5px; color: #354a65; line-height: 1.6; margin-bottom: 3px; }
+.kb-details { margin-top: 12px; border-top: 1px dashed #dce6f2; padding-top: 8px; }
+.kb-details summary { cursor: pointer; color: #1f4e9c; font-size: 12.5px; font-weight: 600; }
+.kb-detail-body { margin-top: 8px; }
+.kb-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 4px 0 10px; }
+.kb-table th, .kb-table td { border: 1px solid #e2eaf4; padding: 6px 8px; text-align: left; vertical-align: top; }
+.kb-table th { background: #f5f8fc; color: #33506f; font-weight: 600; }
+.kb-check-list, .kb-action-list { margin: 4px 0 10px; padding-left: 20px; font-size: 12.5px; color: #354a65; line-height: 1.7; }
+.kb-risk { font-size: 12.5px; color: #8a4b00; background: #fff8e6; border-left: 3px solid #d99a1a; padding: 8px 10px; border-radius: 4px; line-height: 1.7; }
+.kb-source-line { margin-top: 8px; font-size: 12px; color: #72839a; }
+.kb-empty { grid-column: 1 / -1; background: #fff; border: 1px dashed #cfdbea; border-radius: 12px; padding: 30px; text-align: center; color: #5b6b80; }
+.kb-empty h3 { margin: 0 0 6px; color: #16355f; }
+@media (max-width: 900px) { .kb-list { grid-template-columns: 1fr; } .kb-actions { width: 100%; } .kb-actions .text-input { min-width: 0; flex: 1 1 160px; } }

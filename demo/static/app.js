@@ -114,6 +114,7 @@
       stale: false, closingId: null, closingWo: null, submitting: false,
       pending: new Set(), requestSeq: 0
     },
+    knowledge: { items: [], total: 0, loaded: false, loading: false, error: null, categories: [], sources: [] },
     createInFlight: new Set(),
     activeTab: 'qa', dashboardErrorState: null, lastFocused: null
   };
@@ -629,7 +630,7 @@
 
   // ---------- 页签 ----------
   function switchTab(tab) {
-    var valid = ['qa', 'checklist', 'dashboard', 'workorders', 'agent'];
+    var valid = ['qa', 'checklist', 'dashboard', 'workorders', 'knowledge', 'agent'];
     if (valid.indexOf(tab) === -1) tab = 'qa';
     state.activeTab = tab;
     dom.tabs.forEach(function (btn) {
@@ -645,6 +646,7 @@
     });
     if (tab === 'dashboard') ensureDashboard();
     if (tab === 'workorders') ensureWorkorders();
+    if (tab === 'knowledge') ensureKnowledge();
     if (tab === 'qa' && document.activeElement === document.body) setTimeout(function () { focusNoScroll(dom.chatInput); }, 30);
     try { history.replaceState(null, '', '#' + tab); } catch (e) { /* 忽略地址栏限制 */ }
   }
@@ -653,6 +655,9 @@
   }
   function ensureWorkorders() {
     if (!state.workorders.loaded || state.workorders.stale) loadWorkorders();
+  }
+  function ensureKnowledge() {
+    if (!state.knowledge.loaded && !state.knowledge.loading) loadKnowledge();
   }
 
   // ---------- 初始化入口在文件末尾 ----------
@@ -2705,6 +2710,13 @@
     });
     dom.refreshWorkordersBtn.addEventListener('click', function () { loadWorkorders(); });
 
+    var kbSearch = byId('kbSearch');
+    var kbCategory = byId('kbCategory');
+    var kbSource = byId('kbSource');
+    if (kbSearch) kbSearch.addEventListener('input', renderKnowledge);
+    if (kbCategory) kbCategory.addEventListener('change', renderKnowledge);
+    if (kbSource) kbSource.addEventListener('change', renderKnowledge);
+
     dom.modalCloseBtn.addEventListener('click', function () { closeClosureModal(); });
     dom.modalCancelBtn.addEventListener('click', function () { closeClosureModal(); });
     dom.modalBackdrop.addEventListener('click', function () { closeClosureModal(); });
@@ -2712,6 +2724,213 @@
       if (event.key === 'Escape' && !dom.modalHost.hidden) closeClosureModal();
     });
     dom.closeForm.addEventListener('submit', function (event) { event.preventDefault(); submitClosure(); });
+  }
+
+
+  // ---------- 知识库 / 案例库 ----------
+  var KB_CATEGORY_LABELS = {
+    LATHE: '数控车床', MILL: '加工中心', PRN: '3D 打印机', LSR: '激光切割机',
+    CMP: '空压机', MOT: '电机', PWR: '配电柜', CCM: '连铸机', FUR: '加热炉',
+    ROL: '轧机', FAN: '除尘风机', HYD: '液压站', EAF: '电弧炉', BAL: '球磨机',
+    KIL: '回转窑', THK: '浓密机', GEN: '通用设备'
+  };
+  var KB_SOURCE_LABELS = {
+    TEACHER_INTERVIEW: '教师口述', MANUAL: '设备手册', WORKORDER: '维修工单', TEMPLATE: '模板'
+  };
+
+  function kbCategoryLabel(code) {
+    return KB_CATEGORY_LABELS[String(code || '').toUpperCase()] || String(code || '未分类');
+  }
+  function kbSourceLabel(code) {
+    return KB_SOURCE_LABELS[String(code || '').toUpperCase()] || String(code || '其他');
+  }
+  function kbSourceClass(code) {
+    return 'src-' + String(code || 'other').toLowerCase();
+  }
+  async function loadKnowledge() {
+    state.knowledge.loading = true;
+    var summary = byId('kbSummary');
+    if (summary) summary.textContent = '正在加载知识库…';
+    try {
+      var data = await api('/api/knowledge?limit=300');
+      state.knowledge.items = data.items || [];
+      state.knowledge.total = data.total || state.knowledge.items.length;
+      state.knowledge.categories = data.categories || [];
+      state.knowledge.sources = data.sources || [];
+      state.knowledge.loaded = true;
+      state.knowledge.error = null;
+      populateKbCategories();
+      renderKnowledge();
+    } catch (err) {
+      state.knowledge.error = err;
+      if (summary) summary.textContent = '知识库加载失败：' + (err.message || err);
+    } finally {
+      state.knowledge.loading = false;
+    }
+  }
+  function populateKbCategories() {
+    var select = byId('kbCategory');
+    if (!select || select.getAttribute('data-filled') === '1') return;
+    select.appendChild(el('option', '', '全部类别'));
+    select.options[0].value = '';
+    state.knowledge.categories.forEach(function (code) {
+      var option = el('option', '', kbCategoryLabel(code));
+      option.value = code;
+      select.appendChild(option);
+    });
+    select.setAttribute('data-filled', '1');
+  }
+  function kbHaystack(entry) {
+    var parts = [
+      entry.id, entry.title, entry.symptom, kbCategoryLabel(entry.equipmentCategory),
+      (entry.symptomKeywords || []).join(' '),
+      (entry.tags || []).join(' '),
+      (entry.causes || []).map(function (cause) { return cause.rootCause || ''; }).join(' '),
+      (entry.actions || []).join(' ')
+    ];
+    return parts.join(' ').toLowerCase();
+  }
+  function kbScore(entry, q) {
+    if (!q) return 0;
+    var titleText = String(entry.title || '').toLowerCase();
+    var symptomText = String(entry.symptom || '').toLowerCase();
+    var keywordText = (entry.symptomKeywords || []).join(' ').toLowerCase();
+    var causeText = (entry.causes || []).map(function (cause) { return cause.rootCause || ''; }).join(' ').toLowerCase();
+    var score = 0;
+    if (titleText.indexOf(q) !== -1) score += 6;
+    if (symptomText.indexOf(q) !== -1) score += 4;
+    if (keywordText.indexOf(q) !== -1) score += 2;
+    if (causeText.indexOf(q) !== -1) score += 1;
+    return score;
+  }
+  function renderKnowledge() {
+    var list = byId('kbList');
+    var summary = byId('kbSummary');
+    if (!list) return;
+    var q = String((byId('kbSearch') && byId('kbSearch').value) || '').trim().toLowerCase();
+    var category = (byId('kbCategory') && byId('kbCategory').value) || '';
+    var source = (byId('kbSource') && byId('kbSource').value) || '';
+    var items = state.knowledge.items.filter(function (entry) {
+      if (category && String(entry.equipmentCategory || '').toUpperCase() !== category) return false;
+      var src = entry.source && entry.source.type ? String(entry.source.type).toUpperCase() : '';
+      if (source && src !== source) return false;
+      if (q && kbHaystack(entry).indexOf(q) === -1) return false;
+      return true;
+    });
+    if (q) {
+      items.sort(function (a, b) { return kbScore(b, q) - kbScore(a, q); });
+    }
+    clearNode(list);
+    if (!items.length) {
+      var empty = el('div', 'kb-empty');
+      empty.appendChild(el('h3', '', '没有匹配的知识条目'));
+      empty.appendChild(el('p', '', '换一个关键词，或清空类别/来源筛选。'));
+      list.appendChild(empty);
+    } else {
+      items.forEach(function (entry) { list.appendChild(renderKbCard(entry)); });
+    }
+    if (summary) {
+      var teacherCount = items.filter(function (entry) {
+        return entry.source && String(entry.source.type).toUpperCase() === 'TEACHER_INTERVIEW';
+      }).length;
+      var criticalCount = items.filter(function (entry) { return !!entry.securityCritical; }).length;
+      summary.textContent = '共 ' + items.length + ' 条' +
+        (items.length !== state.knowledge.total ? '（筛自 ' + state.knowledge.total + ' 条）' : '') +
+        ' · 教师口述 ' + teacherCount + ' 条 · 安全关键 ' + criticalCount + ' 条';
+    }
+  }
+  function renderKbCard(entry) {
+    var sourceType = entry.source && entry.source.type ? String(entry.source.type).toUpperCase() : '';
+    var card = el('article', 'kb-card');
+    var head = el('div', 'kb-card-head');
+    var titleWrap = el('div', 'kb-card-title');
+    var code = el('span', 'kb-code', entry.id || '');
+    var title = el('h3', '', entry.title || '未命名知识');
+    titleWrap.appendChild(code);
+    titleWrap.appendChild(title);
+    head.appendChild(titleWrap);
+    var badge = el('span', 'kb-source ' + kbSourceClass(sourceType), kbSourceLabel(sourceType));
+    head.appendChild(badge);
+    card.appendChild(head);
+    card.appendChild(el('p', 'kb-symptom', entry.symptom || ''));
+    var meta = el('div', 'kb-meta');
+    meta.appendChild(el('span', '', '设备类别：' + kbCategoryLabel(entry.equipmentCategory)));
+    meta.appendChild(el('span', '', '审核：' + (entry.reviewer || '—')));
+    meta.appendChild(el('span', '', '生效：' + (entry.effectiveFrom || entry.approvedAt || '—')));
+    if (entry.securityCritical) meta.appendChild(el('span', 'kb-sec', '安全关键'));
+    card.appendChild(meta);
+    var causes = entry.causes || [];
+    if (causes.length) {
+      var causeBlock = el('div', 'kb-block');
+      causeBlock.appendChild(el('div', 'kb-block-title', '可能原因（按概率排序）'));
+      causes.slice(0, 3).forEach(function (cause) {
+        var row = el('div', 'kb-cause');
+        row.appendChild(el('span', 'prob ' + (cause.probability || 'MEDIUM'), cause.probability || 'MEDIUM'));
+        row.appendChild(el('span', '', cause.rootCause || ''));
+        causeBlock.appendChild(row);
+      });
+      card.appendChild(causeBlock);
+    }
+    var actions = entry.actions || [];
+    if (actions.length) {
+      var actionBlock = el('div', 'kb-block');
+      actionBlock.appendChild(el('div', 'kb-block-title', '处置步骤'));
+      actions.slice(0, 2).forEach(function (action) {
+        actionBlock.appendChild(el('div', 'kb-action', '• ' + action));
+      });
+      card.appendChild(actionBlock);
+    }
+    var details = el('details', 'kb-details');
+    details.appendChild(el('summary', '', '展开原因 / 判据 / 完整步骤 / 风险 / 来源'));
+    var content = el('div', 'kb-detail-body');
+    if (causes.length) {
+      content.appendChild(el('div', 'kb-block-title', '完整原因与验证方法'));
+      var table = el('table', 'kb-table');
+      var thead = el('thead');
+      var headRow = el('tr');
+      ['原因', '概率', '判定依据', '验证方法'].forEach(function (label) { headRow.appendChild(el('th', '', label)); });
+      thead.appendChild(headRow);
+      table.appendChild(thead);
+      var tbody = el('tbody');
+      causes.forEach(function (cause) {
+        var row = el('tr');
+        row.appendChild(el('td', '', cause.rootCause || ''));
+        var probCell = el('td');
+        probCell.appendChild(el('span', 'prob ' + (cause.probability || 'MEDIUM'), cause.probability || 'MEDIUM'));
+        row.appendChild(probCell);
+        row.appendChild(el('td', '', cause.basis || '—'));
+        row.appendChild(el('td', '', cause.verifyMethod || '—'));
+        tbody.appendChild(row);
+      });
+      table.appendChild(tbody);
+      content.appendChild(table);
+    }
+    var checks = entry.checks || [];
+    if (checks.length) {
+      content.appendChild(el('div', 'kb-block-title', '排查判据'));
+      var checkList = el('ul', 'kb-check-list');
+      checks.forEach(function (check) {
+        checkList.appendChild(el('li', '', (check.step || '') + '：' + (check.criterion || '')));
+      });
+      content.appendChild(checkList);
+    }
+    if (actions.length) {
+      content.appendChild(el('div', 'kb-block-title', '完整处置步骤'));
+      var actionList = el('ol', 'kb-action-list');
+      actions.forEach(function (action) { actionList.appendChild(el('li', '', action)); });
+      content.appendChild(actionList);
+    }
+    if (entry.risk) {
+      content.appendChild(el('div', 'kb-block-title', '风险与安全提示'));
+      content.appendChild(el('div', 'kb-risk', entry.risk));
+    }
+    var source = entry.source || {};
+    var sourceLine = el('div', 'kb-source-line');
+    sourceLine.textContent = '来源：' + (source.title || '—') + (source.locator ? '（' + source.locator + '）' : '');
+    content.appendChild(sourceLine);
+    details.appendChild(content);
+    card.appendChild(details);
+    return card;
   }
 
   // ---------- 启动 ----------
@@ -2724,7 +2943,7 @@
     updateSendState();
     dom.generateChecklistBtn.disabled = true;
     var initial = String(location.hash || '').replace('#', '');
-    switchTab(['qa', 'checklist', 'dashboard', 'workorders'].indexOf(initial) >= 0 ? initial : 'qa');
+    switchTab(['qa', 'checklist', 'dashboard', 'workorders', 'knowledge'].indexOf(initial) >= 0 ? initial : 'qa');
     loadHealth();
     loadEquipment({ silent: true });
   }

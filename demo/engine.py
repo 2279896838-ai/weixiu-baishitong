@@ -1131,6 +1131,43 @@ class Engine:
             entry = self._knowledge_by_id.get(key)
             return copy.deepcopy(entry) if entry else None
 
+    def list_knowledge(self, query: str = "", category: str = "", source: str = "", limit: int = 200) -> dict:
+        """知识库/案例库检索：按关键词、设备类别、来源类型过滤。"""
+        self._refresh()
+        q = _safe_str(query).lower()
+        category = _safe_str(category).upper()
+        source = _safe_str(source).upper()
+        with self._lock:
+            rows = copy.deepcopy(self._knowledge)
+        items = []
+        for entry in rows:
+            source_info = entry.get("source") or {}
+            source_type = _safe_str(source_info.get("type")).upper()
+            if category and entry.get("equipmentCategory") != category:
+                continue
+            if source and source_type != source:
+                continue
+            if q:
+                haystack = " ".join([
+                    _safe_str(entry.get("title")),
+                    _safe_str(entry.get("symptom")),
+                    " ".join(_safe_str(x) for x in entry.get("symptomKeywords") or []),
+                    " ".join(_safe_str(x) for x in entry.get("tags") or []),
+                    " ".join(_safe_str(c.get("rootCause")) for c in entry.get("causes") or []),
+                    " ".join(_safe_str(x) for x in entry.get("actions") or []),
+                ]).lower()
+                if q not in haystack:
+                    continue
+            items.append(entry)
+        items.sort(key=lambda e: (_safe_str(e.get("equipmentCategory")), _safe_str(e.get("id"))))
+        try:
+            limit = max(1, min(int(limit), 300))
+        except Exception:
+            limit = 200
+        categories = sorted({_safe_str(e.get("equipmentCategory")) for e in items if _safe_str(e.get("equipmentCategory"))})
+        sources = sorted({_safe_str((e.get("source") or {}).get("type")) for e in items if _safe_str((e.get("source") or {}).get("type"))})
+        return {"total": len(items), "items": items[:limit], "categories": categories, "sources": sources}
+
     # ------------------------------------------------------------------
     # 槽位与意图
     # ------------------------------------------------------------------

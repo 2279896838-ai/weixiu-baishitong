@@ -48,13 +48,14 @@ docker compose -f docker-compose.prod.yml up -d --build
 | 提交项 | 文件 / 方式 | 说明 |
 | --- | --- | --- |
 | 可运行作品①：本地服务 | 双击 [启动维修百事通.bat](启动维修百事通.bat) | 自动启动 http://127.0.0.1:8787 并打开浏览器 |
-| 可运行作品②：单文件离线版 | [deliverables/维修百事通-离线演示.html](deliverables/维修百事通-离线演示.html) | 约 991 KB，双击即用；四功能，第 01 页签“智能体问答”（原故障问答，推荐评委体验） |
+| 可运行作品②：单文件离线版 | [deliverables/维修百事通-离线演示.html](deliverables/维修百事通-离线演示.html) | 约 1009 KB，双击即用；四功能，第 01 页签“智能体问答”（原故障问答，推荐评委体验） |
 | 可运行作品③：智能体问答 | [deliverables/维修百事通-智能体问答.html](deliverables/维修百事通-智能体问答.html) | 约 350 KB 单文件；或服务版访问 http://127.0.0.1:8787/agent |
 | 可运行作品③：局域网二维码 | [design/images/qr-access.png](design/images/qr-access.png) | 扫描访问本机 8787 端口；需与演示电脑同一局域网 |
 | 设计说明书（PDF） | [deliverables/维修百事通-设计说明书.pdf](deliverables/维修百事通-设计说明书.pdf) | 21 页：业务场景、功能架构、工作流程、知识库与提示词、智能体与工业级就绪、测试记录 |
 | 设计说明书（Word） | [design/设计说明书.docx](design/设计说明书.docx) | 可编辑源稿 |
 | 提示词工程规范 | [deliverables/维修百事通-提示词工程规范-v1.0.docx](deliverables/维修百事通-提示词工程规范-v1.0.docx) / [.pdf](deliverables/维修百事通-提示词工程规范-v1.0.pdf) | 13 章、82 页、15 个提示词资产 |
 | 演示源码与数据 | [demo/](demo/) / [data/](data/) | Python 标准库引擎、单页前端、构建脚本、实训数据包 |
+| 知识库与案例库 | 控制台第 05 页签：按设备类别/来源检索 63 条知识，查看原因、判据、步骤、风险与来源，教师口述案例可追溯 |
 | 在线演示（GitHub Pages） | https://2279896838-ai.github.io/weixiu-baishitong/ | 浏览器直接打开，单文件离线演示，无需安装 |
 | 项目方案（报名用） | [deliverables/维修百事通-项目方案.pdf](deliverables/维修百事通-项目方案.pdf) / [.docx](deliverables/维修百事通-项目方案.docx) | 4 页，可直接上传到大赛“项目方案”附件；填写稿见 [design/报名表填写稿.md](design/报名表填写稿.md) |
 
@@ -190,7 +191,7 @@ templates/                 Word 样式模板
 | 提示词资产 | 15 个（WXBST-SYS/RTR/QA/TRG/CHK-001/CHK-002/DASH/WO/EXT/INT/RAG-QRY/RAG-RNK/FIX/SEC/EVL） |
 | 设计说明书 | 21 页（含智能体问答、工业级就绪、5 张界面截图、二维码、测试记录） |
 | 数据包 | 16 台设备、63 条知识、119 项点检、5 棵树 63 节点、78 条评测、3 篇访谈 |
-| 离线演示 | 单文件约 991 KB，内嵌全部数据、离线 API 垫片与智能体问答页签 |
+| 离线演示 | 单文件约 1009 KB，内嵌全部数据、离线 API 垫片与智能体问答页签 |
 | 智能体问答 | 单文件约 350 KB，工具编排；服务器路由 /agent；在线/离线各 12 项自动验证 |
 | 提示词运行时 | 启动加载 15 个资产（registry + 正文），/api/prompts 可查版本、哈希与占位符 |
 
@@ -203,7 +204,7 @@ templates/                 Word 样式模板
 | 提示词运行时 | python scripts/test-prompts.py | 15 个资产加载、版本/占位符/LLM system prompt 校验全部通过 |
 | 评测集回归 | python demo/evaluate.py | 16/16 通过；意图/关键词/引用/危险拦截/结构 5 项 100%（详见 design/eval-report.md） |
 | 离线垫片单测 | node scripts/verify-offline.mjs | ALL OFFLINE SHIM CHECKS PASSED（43 项，含绕过表达、注入拒答、连铸/液压问答与冶金安全拦截） |
-| 单文件构建 | node demo/build-offline.mjs | 设备 16 / 知识 63 / 点检 119 / 树 5；产物约 991 KB |
+| 单文件构建 | node demo/build-offline.mjs | 设备 16 / 知识 63 / 点检 119 / 树 5；产物约 1009 KB |
 | 浏览器渲染 | Chrome 打开离线 HTML | 标题、设备下拉、离线徽标、四页签正常；DOM 含 16 台设备编码 |
 | 智能体问答验证 | node scripts/agent-smoke.mjs | 12/12 通过（在线 /agent 与离线单文件各跑一次：诊断/点检/引导/看板/工具轨迹） |
 | 内嵌页签验证 | node scripts/embed-smoke.mjs | 5/5 通过（在线 / 与离线主演示第 01 页签各一次：iframe 加载、16 台设备、智能体回答） |

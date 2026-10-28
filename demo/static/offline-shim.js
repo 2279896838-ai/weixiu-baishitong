@@ -2241,9 +2241,48 @@
   // 路由与 fetch
   // ---------------------------------------------------------------------------
 
+  function handleKnowledge(query) {
+    var q = compact(query.query || '');
+    var category = text(query.category || '').toUpperCase();
+    var source = text(query.source || '').toUpperCase();
+    var rows = [];
+    DATA.knowledge.forEach(function (entry) {
+      var sourceType = entry.source && entry.source.type ? text(entry.source.type).toUpperCase() : '';
+      if (category && text(entry.equipmentCategory).toUpperCase() !== category) { return; }
+      if (source && sourceType !== source) { return; }
+      if (q) {
+        var haystack = compact([
+          entry.title, entry.symptom,
+          (entry.symptomKeywords || []).join(' '),
+          (entry.tags || []).join(' '),
+          (entry.causes || []).map(function (c) { return c.rootCause || ''; }).join(' '),
+          (entry.actions || []).join(' ')
+        ].join(' '));
+        if (haystack.indexOf(q) === -1) { return; }
+      }
+      rows.push(entry);
+    });
+    rows.sort(function (a, b) {
+      var ka = text(a.equipmentCategory) + text(a.id);
+      var kb = text(b.equipmentCategory) + text(b.id);
+      return ka < kb ? -1 : (ka > kb ? 1 : 0);
+    });
+    var limit = parseInt(query.limit || '200', 10);
+    if (!isFinite(limit) || limit < 1) { limit = 200; }
+    if (limit > 300) { limit = 300; }
+    var categories = {};
+    var sources = {};
+    rows.forEach(function (entry) {
+      if (entry.equipmentCategory) { categories[entry.equipmentCategory] = true; }
+      if (entry.source && entry.source.type) { sources[entry.source.type] = true; }
+    });
+    return { total: rows.length, items: rows.slice(0, limit), categories: Object.keys(categories).sort(), sources: Object.keys(sources).sort() };
+  }
+
   function dispatch(method, path, query, body) {
     if (method === 'GET' && path === '/api/health') { return handleHealth(); }
     if (method === 'GET' && path === '/api/equipment') { return handleEquipment(getQuery(query, 'query')); }
+    if (method === 'GET' && path === '/api/knowledge') { return handleKnowledge({ query: getQuery(query, 'query'), category: getQuery(query, 'category'), source: getQuery(query, 'source'), limit: getQuery(query, 'limit') }); }
     if (method === 'GET' && path === '/api/dashboard') { return handleDashboardRequest(getQuery(query, 'days')); }
     if (method === 'GET' && path === '/api/workorders') { return listWorkordersData(getQuery(query, 'status')); }
     if (method === 'POST' && path === '/api/chat') { return handleChatRequest(body); }

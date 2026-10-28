@@ -313,6 +313,16 @@ class Handler(BaseHTTPRequestHandler):
             if path == "/api/equipment":
                 q = (query.get("query") or [""])[0]
                 return self._send(200, ENGINE.list_equipment(q))
+            if path == "/api/knowledge":
+                try:
+                    limit = int((query.get("limit") or ["200"])[0] or 200)
+                except ValueError:
+                    limit = 200
+                return self._send(200, ENGINE.list_knowledge(
+                    (query.get("query") or [""])[0],
+                    (query.get("category") or [""])[0],
+                    (query.get("source") or [""])[0],
+                    limit))
             if path == "/api/dashboard":
                 days = int((query.get("days") or ["30"])[0] or 30)
                 return self._send(200, ENGINE.dashboard(days))

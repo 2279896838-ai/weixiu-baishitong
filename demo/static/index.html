@@ -54,6 +54,9 @@
         <button class="tab" id="tabBtn-workorders" type="button" role="tab" data-tab="workorders" aria-selected="false" aria-controls="panel-workorders" tabindex="-1">
           <span class="tab-num">04</span><span>工单管理</span>
         </button>
+        <button class="tab" id="tabBtn-knowledge" type="button" role="tab" data-tab="knowledge" aria-selected="false" aria-controls="panel-knowledge" tabindex="-1">
+          <span class="tab-num">05</span><span>知识库</span>
+        </button>
       </div>
       <div class="session-meta" id="sessionMeta" title="当前会话编号">会话 —</div>
     </div>
@@ -351,6 +354,29 @@
       </div>
     </section>
 
+
+    <section class="tab-panel" id="panel-knowledge" role="tabpanel" aria-labelledby="tabBtn-knowledge" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">知识库 · 一线案例 · 可追溯</div>
+          <h2>知识库与案例库</h2>
+          <p>检索实训设备与智能冶金知识；教师口述、设备手册、维修工单等来源全部保留，点击条目可展开原因、判据与处置步骤。</p>
+        </div>
+        <div class="page-actions kb-actions">
+          <input id="kbSearch" class="text-input" type="search" placeholder="搜索设备、现象、原因…" aria-label="搜索知识库">
+          <select id="kbCategory" class="select" aria-label="按设备类别筛选"></select>
+          <select id="kbSource" class="select" aria-label="按来源筛选">
+            <option value="">全部来源</option>
+            <option value="TEACHER_INTERVIEW">教师口述</option>
+            <option value="MANUAL">设备手册</option>
+            <option value="WORKORDER">维修工单</option>
+            <option value="TEMPLATE">模板</option>
+          </select>
+        </div>
+      </div>
+      <div class="kb-summary" id="kbSummary">正在加载知识库…</div>
+      <div class="kb-list" id="kbList"></div>
+    </section>
   </main>
 
   <footer class="site-footer">
