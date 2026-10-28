@@ -382,7 +382,8 @@
     if (/工单|派单|报修|结案/.test(text)) { return { tool: 'workorder' }; }
     if (/看板|统计|汇总|异常分布|趋势/.test(text)) { return { tool: 'dashboard' }; }
     if (/排查|一步步|逐步|引导|故障树|带我/.test(text)) { return { tool: 'guide' }; }
-    if (/设备.*(参数|台账|安全规则)|查一下设备|设备信息/.test(text)) { return { tool: 'equipment' }; }
+    if (/选型|磨矿|处理量|分级|填充率|容积|控制参数|工艺计算|设备选型方案/.test(text)) { return { tool: 'fault_qa' }; }
+    if (/设备(参数|台账|安全规则)|查一下设备|设备信息|设备清单/.test(text)) { return { tool: 'equipment' }; }
     return { tool: 'fault_qa' };
   }
 

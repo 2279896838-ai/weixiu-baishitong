@@ -100,7 +100,7 @@ def check_health():
     limits = data.get("limits") or {}
     gate("health: limits", limits.get("maxBodyBytes") == 262144 and limits.get("maxMessageChars") == 2000, limits)
     stats = data.get("stats") or {}
-    gate("health: data stats", stats.get("equipment") == 16 and stats.get("knowledge") == 64 and stats.get("trees") == 5, stats)
+    gate("health: data stats", stats.get("equipment") == 16 and stats.get("knowledge") == 66 and stats.get("trees") == 5, stats)
     prompts = data.get("prompts") or {}
     gate("health: prompts", prompts.get("count") == 15 and prompts.get("errors") == 0, prompts)
 
@@ -239,7 +239,7 @@ def check_data_contract():
     for name in ("eval_cases.jsonl", "eval_cases_ext.jsonl", "eval_cases_met.jsonl"):
         eval_rows.extend(load_jsonl(os.path.join(DATA_DIR, name)))
 
-    gate("data: counts", len(equipment) == 16 and len(knowledge) == 64 and len(trees) == 5 and len(eval_rows) == 78, [len(equipment), len(knowledge), len(trees), len(eval_rows)])
+    gate("data: counts", len(equipment) == 16 and len(knowledge) == 66 and len(trees) == 5 and len(eval_rows) == 78, [len(equipment), len(knowledge), len(trees), len(eval_rows)])
 
     equipment_keys = {"equipmentCode", "name", "category", "location", "brand", "specs", "commonFaults", "safetyRules"}
     eq_bad = [item.get("equipmentCode") for item in equipment if not equipment_keys.issubset(item.keys())]

@@ -63,7 +63,7 @@ async function call(method, url, body) {
 function findKB(payload, id) { return (payload.citations || []).indexOf(id) !== -1; }
 
 const health = await call('GET', '/api/health');
-check('health', health.status === 200 && health.data.stats.equipment === 16 && health.data.stats.knowledge === 64, health.data.stats);
+check('health', health.status === 200 && health.data.stats.equipment === 16 && health.data.stats.knowledge === 66, health.data.stats);
 
 const equipment = await call('GET', '/api/equipment');
 check('equipment list', equipment.status === 200 && equipment.data.length === 16, equipment.data.length);
