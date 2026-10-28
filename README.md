@@ -55,6 +55,7 @@ docker compose -f docker-compose.prod.yml up -d --build
 | 设计说明书（Word） | [design/设计说明书.docx](design/设计说明书.docx) | 可编辑源稿 |
 | 提示词工程规范 | [deliverables/维修百事通-提示词工程规范-v1.0.docx](deliverables/维修百事通-提示词工程规范-v1.0.docx) / [.pdf](deliverables/维修百事通-提示词工程规范-v1.0.pdf) | 13 章、82 页、15 个提示词资产 |
 | 演示源码与数据 | [demo/](demo/) / [data/](data/) | Python 标准库引擎、单页前端、构建脚本、实训数据包 |
+| 在线演示（GitHub Pages） | https://2279896838-ai.github.io/weixiu-baishitong/ | 浏览器直接打开，单文件离线演示，无需安装 |
 | 项目方案（报名用） | [deliverables/维修百事通-项目方案.pdf](deliverables/维修百事通-项目方案.pdf) / [.docx](deliverables/维修百事通-项目方案.docx) | 4 页，可直接上传到大赛“项目方案”附件；填写稿见 [design/报名表填写稿.md](design/报名表填写稿.md) |
 
 > 说明：当前未部署公网固定地址。离线版是单文件 HTML，可上传任意静态托管获得公网链接；本地服务版适合答辩现场；二维码用于同一局域网的多设备体验。二维码中的 IP 以启动窗口显示的地址为准，可运行 python scripts/make-qr.py 重新生成。
