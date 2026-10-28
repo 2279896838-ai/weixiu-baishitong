@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="维修百事通 · 设备故障诊断助手：问答、排查引导、点检、看板与工单闭环。">
+  <title>维修百事通 · 设备故障诊断助手</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="top-progress" id="topProgress" aria-hidden="true"><span></span></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span>修</span><i></i></div>
+        <div class="brand-copy">
+          <h1>维修百事通 <span class="brand-sep">·</span> 设备故障诊断助手</h1>
+          <p>实训车间与中小企业设备维护</p>
+        </div>
+      </div>
+      <div class="header-tools">
+        <a class="agent-link" href="/agent">智能体问答 →</a>
+        <div class="mode-badge is-loading" id="modeBadge" title="正在读取服务模式">
+          <span class="mode-dot" aria-hidden="true"></span>
+          <span id="modeText">连接中</span>
+        </div>
+        <div class="equipment-field">
+          <label for="equipmentSelect">当前设备</label>
+          <div class="select-wrap">
+            <select id="equipmentSelect" disabled aria-label="选择当前设备">
+              <option value="">加载设备…</option>
+            </select>
+          </div>
+          <button class="icon-btn" id="refreshEquipmentBtn" type="button" title="重新加载设备列表" aria-label="重新加载设备列表">↻</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabbar" aria-label="主导航">
+    <div class="tabbar-inner">
+      <div class="tabs" role="tablist" aria-label="功能页签">
+        <button class="tab is-active" id="tabBtn-qa" type="button" role="tab" data-tab="qa" aria-selected="true" aria-controls="panel-qa" tabindex="0">
+          <span class="tab-num">01</span><span>智能体问答</span>
+        </button>
+        <button class="tab" id="tabBtn-checklist" type="button" role="tab" data-tab="checklist" aria-selected="false" aria-controls="panel-checklist" tabindex="-1">
+          <span class="tab-num">02</span><span>点检填报</span>
+        </button>
+        <button class="tab" id="tabBtn-dashboard" type="button" role="tab" data-tab="dashboard" aria-selected="false" aria-controls="panel-dashboard" tabindex="-1">
+          <span class="tab-num">03</span><span>异常看板</span>
+        </button>
+        <button class="tab" id="tabBtn-workorders" type="button" role="tab" data-tab="workorders" aria-selected="false" aria-controls="panel-workorders" tabindex="-1">
+          <span class="tab-num">04</span><span>工单管理</span>
+        </button>
+      </div>
+      <div class="session-meta" id="sessionMeta" title="当前会话编号">会话 —</div>
+    </div>
+  </nav>
+
+  <div class="global-alert" id="globalAlert" hidden>
+    <span class="alert-icon" aria-hidden="true">!</span>
+    <div class="alert-copy">
+      <strong id="globalAlertTitle">连接失败</strong>
+      <p id="globalAlertText"></p>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="globalAlertRetry" type="button">重试</button>
+  </div>
+
+  <main class="page">
+    <!-- 01 智能体问答（原故障问答，内嵌智能体） -->
+    <section class="tab-panel is-active" id="panel-qa" role="tabpanel" aria-labelledby="tabBtn-qa">
+      <div id="legacyQa" hidden>
+      <div class="qa-layout">
+        <section class="card chat-card" aria-label="故障问答对话">
+          <header class="chat-head">
+            <div>
+              <div class="eyebrow">知识库检索 · 原因排序 · 安全处置</div>
+              <h2>故障问答</h2>
+              <p>描述现象与已做检查，助手会给出可验证的排查方向。</p>
+            </div>
+            <div class="chat-head-actions">
+              <span class="guide-state-pill" id="guideStatePill" hidden>排查引导中</span>
+              <button class="btn btn-ghost btn-sm" id="clearChatBtn" type="button">清空对话</button>
+            </div>
+          </header>
+
+          <div class="chat-body" id="chatBody" tabindex="0">
+            <div class="chat-empty" id="chatEmpty">
+              <div class="empty-illustration" aria-hidden="true">
+                <span class="ring ring-a"></span><span class="ring ring-b"></span>
+                <span class="empty-glyph">诊</span>
+              </div>
+              <h3>先描述故障现象，再一起缩小范围</h3>
+              <p>从知识库检索相似案例，输出排序原因、验证方法、处置步骤与引用来源。涉及安全风险时，系统会提示先停机断电。</p>
+              <div class="prompt-chips" id="promptChips">
+                <button class="prompt-chip" type="button" data-prompt="数控车床主轴转起来咔啦咔啦响，是什么原因？">数控车床主轴异响</button>
+                <button class="prompt-chip" type="button" data-prompt="加工中心换刀时出现报警，应该怎么排查？">加工中心换刀报警</button>
+                <button class="prompt-chip" type="button" data-prompt="3D 打印机挤出不足、疑似堵头，怎么处理？">3D 打印堵头</button>
+                <button class="prompt-chip" type="button" data-prompt="空压机压力上不去还频繁跳机，可能是什么问题？">空压机跳机</button>
+                <button class="prompt-chip" type="button" data-prompt="激光切割机不出光，先做哪些安全检查？">激光不出光</button>
+              </div>
+              <p class="empty-foot">点击示例问题即可发送，也可以直接输入。</p>
+            </div>
+            <div class="messages" id="messages"></div>
+            <div class="typing-row" id="typingIndicator" hidden>
+              <div class="typing-avatar" aria-hidden="true">修</div>
+              <div class="typing-bubble">
+                <span class="typing-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span id="typingText">正在检索知识库…</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="composer-zone">
+            <div class="guide-banner" id="guideBanner" hidden>
+              <span class="guide-banner-icon" aria-hidden="true">↳</span>
+              <div class="guide-banner-copy">
+                <strong>排查引导进行中</strong>
+                <span id="guideBannerText">请在下方回答当前问题。</span>
+              </div>
+              <button class="btn btn-ghost btn-sm" id="exitGuideBtn" type="button">退出引导</button>
+            </div>
+            <form class="composer" id="chatForm" autocomplete="off">
+              <textarea id="chatInput" rows="1" maxlength="1000" aria-label="输入故障描述" placeholder="描述故障现象，例如：数控车床主轴转起来咔啦咔啦响…"></textarea>
+              <div class="composer-actions">
+                <span class="char-count" id="charCount">0 / 1000</span>
+                <button class="btn btn-primary send-btn" id="sendBtn" type="submit">
+                  <span id="sendBtnText">发送</span><span class="key-hint" aria-hidden="true">↵</span>
+                </button>
+              </div>
+            </form>
+            <p class="composer-hint">Enter 发送 · Shift + Enter 换行 · 涉及安全风险时请先停机断电并联系教师</p>
+          </div>
+        </section>
+
+        <aside class="qa-side" aria-label="设备与会话信息">
+          <section class="card side-card equipment-card">
+            <div class="side-head">
+              <h3>当前设备</h3>
+              <span class="mini-label" id="equipmentCategoryTag">—</span>
+            </div>
+            <div class="equipment-detail" id="equipmentDetail">
+              <div class="skeleton skeleton-line w-70"></div>
+              <div class="skeleton skeleton-line w-45"></div>
+              <div class="skeleton skeleton-block"></div>
+            </div>
+          </section>
+
+          <section class="card side-card">
+            <div class="side-head"><h3>提问建议</h3></div>
+            <ul class="tip-list">
+              <li>说明设备名称、型号与报警代码</li>
+              <li>描述发生时机与已做的检查</li>
+              <li>异响类说明转速、负载与声音变化</li>
+              <li>不确定时直接说“不确定”，不要猜测</li>
+            </ul>
+          </section>
+
+          <section class="card side-card safety-note">
+            <div class="safety-note-head"><span aria-hidden="true">!</span><h3>安全优先</h3></div>
+            <p>出现冒烟、明火、漏电、异常高温或人员受伤时，立即停机、断电、撤离现场，并联系实训教师或值班维修人员，不要继续排查。</p>
+          </section>
+
+          <div class="side-meta" id="sideMeta">离线优先 · 本地知识库</div>
+        </aside>
+      </div>
+      </div>
+      <iframe id="agentFrame" src="/agent" title="智能体问答"></iframe>
+    </section>
+
+    <!-- 02 点检填报 -->
+    <section class="tab-panel" id="panel-checklist" role="tabpanel" aria-labelledby="tabBtn-checklist" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">日常点检 · 异常闭环</div>
+          <h2>点检填报</h2>
+          <p>选择设备与频次生成清单，逐项记录结果；异常项必须填写备注。</p>
+        </div>
+      </div>
+
+      <div class="card generate-bar">
+        <div class="field">
+          <label for="checkEquipment">设备</label>
+          <select id="checkEquipment" aria-label="点检设备" disabled>
+            <option value="">加载设备…</option>
+          </select>
+        </div>
+        <div class="field field-narrow">
+          <label for="checkFrequency">频次</label>
+          <select id="checkFrequency" aria-label="点检频次">
+            <option value="D">日检 D</option>
+            <option value="W">周检 W</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" id="generateChecklistBtn" type="button">生成点检清单</button>
+        <span class="generate-hint">依据设备类别与频次生成标准点检项，清单仅用于演示。</span>
+      </div>
+
+      <div class="inline-alert" id="checklistAlert" hidden></div>
+
+      <div id="checklistArea">
+        <div class="card empty-panel" id="checklistEmpty">
+          <div class="empty-icon" aria-hidden="true">检</div>
+          <h3>还没有生成点检清单</h3>
+          <p>选择上方设备与频次后点击“生成点检清单”。提交时系统会校验异常项备注，并把异常汇总到看板。</p>
+          <div class="empty-steps" aria-hidden="true">
+            <span><b>1</b>选择设备</span><i></i><span><b>2</b>生成清单</span><i></i><span><b>3</b>逐项填报</span><i></i><span><b>4</b>提交异常</span>
+          </div>
+        </div>
+
+        <div class="loading-panel card" id="checklistLoading" hidden>
+          <span class="spinner spinner-lg" aria-hidden="true"></span>
+          <div><strong>正在生成点检清单…</strong><p>按设备类别与频次匹配点检模板</p></div>
+        </div>
+
+        <div id="checklistWorkspace" hidden>
+          <div class="card table-card">
+            <div class="table-head">
+              <div>
+                <h3 id="checklistTitle">点检清单</h3>
+                <p id="checklistMeta">—</p>
+              </div>
+              <div class="table-head-fields">
+                <label class="compact-field">填报人
+                  <input id="operatorInput" type="text" maxlength="30" value="实训学生" autocomplete="name">
+                </label>
+                <label class="compact-field">整体备注
+                  <input id="overallNote" type="text" maxlength="200" placeholder="选填">
+                </label>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table checklist-table">
+                <caption class="sr-only">点检清单填报表</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">编号</th>
+                    <th scope="col">项目</th>
+                    <th scope="col">部位</th>
+                    <th scope="col">判定标准</th>
+                    <th scope="col">方法</th>
+                    <th scope="col">工具</th>
+                    <th scope="col">安全提示</th>
+                    <th scope="col">结果选择</th>
+                    <th scope="col">备注</th>
+                  </tr>
+                </thead>
+                <tbody id="checklistTbody"></tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <div class="legend">
+                <span><i class="dot dot-green"></i>OK</span>
+                <span><i class="dot dot-red"></i>异常需备注</span>
+                <span><i class="dot dot-gray"></i>不适用</span>
+                <span id="checklistCounts" class="counts">—</span>
+              </div>
+              <div class="footer-actions">
+                <button class="btn btn-ghost" id="clearChecklistBtn" type="button">清除重填</button>
+                <button class="btn btn-primary" id="submitChecklistBtn" type="button">提交点检</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card result-card" id="submissionResult" hidden></div>
+      </div>
+    </section>
+
+    <!-- 03 异常看板 -->
+    <section class="tab-panel" id="panel-dashboard" role="tabpanel" aria-labelledby="tabBtn-dashboard" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">点检数据 · 风险概览</div>
+          <h2>异常看板</h2>
+          <p>汇总点检提交、异常分布、高风险设备与未闭环工单。</p>
+        </div>
+        <div class="head-actions">
+          <div class="range-switch" id="rangeSwitch" role="group" aria-label="时间范围">
+            <button class="range-btn" type="button" data-days="7">近 7 天</button>
+            <button class="range-btn is-active" type="button" data-days="30">近 30 天</button>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="refreshDashboardBtn" type="button">↻ 刷新</button>
+        </div>
+      </div>
+
+      <div class="inline-alert" id="dashboardAlert" hidden></div>
+
+      <div id="dashboardContent">
+        <div class="summary-grid" id="summaryGrid" aria-label="看板汇总"></div>
+
+        <div class="dashboard-grid">
+          <section class="card chart-card">
+            <div class="card-head">
+              <div><h3>按类别异常分布</h3><p>异常项数量 / 设备类别</p></div>
+              <span class="mini-label" id="chartDaysBadge">近 30 天</span>
+            </div>
+            <div class="bar-chart" id="categoryChart"></div>
+          </section>
+          <section class="card top-card">
+            <div class="card-head">
+              <div><h3>异常设备 Top5</h3><p>按异常数量排序</p></div>
+            </div>
+            <div class="rank-list" id="topEquipment"></div>
+          </section>
+        </div>
+
+        <section class="card recent-card">
+          <div class="card-head">
+            <div><h3>最近异常</h3><p>可直接由异常创建维修工单</p></div>
+            <button class="btn btn-ghost btn-sm" id="refreshDashboardInlineBtn" type="button">↻ 刷新</button>
+          </div>
+          <div id="recentAnomalies"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- 04 工单管理 -->
+    <section class="tab-panel" id="panel-workorders" role="tabpanel" aria-labelledby="tabBtn-workorders" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">闭环处置 · 知识回流</div>
+          <h2>工单管理</h2>
+          <p>跟踪异常工单状态，完成结案回填；结案后自动回流知识候选池。</p>
+        </div>
+        <div class="head-actions">
+          <button class="btn btn-ghost btn-sm" id="refreshWorkordersBtn" type="button">↻ 刷新工单</button>
+        </div>
+      </div>
+
+      <div class="inline-alert" id="workorderNotice" hidden></div>
+
+      <div class="filter-bar" id="woFilterBar" role="group" aria-label="工单筛选">
+        <button class="filter-chip is-active" type="button" data-filter="all">全部 <span id="woCountAll">0</span></button>
+        <button class="filter-chip" type="button" data-filter="open">未结案 <span id="woCountOpen">0</span></button>
+        <button class="filter-chip" type="button" data-filter="closed">已结案 <span id="woCountClosed">0</span></button>
+      </div>
+
+      <div class="wo-list" id="workorderList"></div>
+
+      <div class="card empty-panel" id="workorderEmpty" hidden>
+        <div class="empty-icon" aria-hidden="true">单</div>
+        <h3>暂无工单</h3>
+        <p>可在“异常看板”的最近异常，或“点检填报”提交后的异常汇总中点击“建单”创建工单。</p>
+        <div class="empty-actions">
+          <button class="btn btn-primary btn-sm" type="button" data-goto-tab="dashboard">去异常看板</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-goto-tab="checklist">去点检填报</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>维修百事通 · 设备故障诊断助手</span>
+    <span>离线优先 · 本地知识库 · 数据仅用于实训教学</span>
+  </footer>
+
+  <div class="toast-host" id="toastHost" aria-live="polite" aria-atomic="false"></div>
+
+  <div class="modal-host" id="modalHost" hidden>
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="closeModal">
+      <header class="modal-head">
+        <div>
+          <div class="eyebrow">工单结案 · 知识回流</div>
+          <h3 id="modalTitle">填写结案报告</h3>
+          <p id="modalSubtitle">—</p>
+        </div>
+        <button class="icon-btn modal-close" id="modalCloseBtn" type="button" title="关闭" aria-label="关闭结案表单">×</button>
+      </header>
+      <form id="closeForm" class="modal-body" novalidate>
+        <input id="closeWoId" type="hidden" value="">
+        <div class="form-grid">
+          <label class="form-field span-2">故障根因 <em>*</em>
+            <textarea id="rootCauseInput" rows="2" maxlength="300" placeholder="例如：主轴前轴承磨损"></textarea>
+          </label>
+          <label class="form-field span-2">处置措施 <em>*</em>
+            <textarea id="repairActionsInput" rows="2" maxlength="600" placeholder="例如：更换 6206-2RS 轴承、清洗润滑脂、复测主轴跳动"></textarea>
+          </label>
+          <label class="form-field">更换备件
+            <input id="partsInput" type="text" maxlength="200" placeholder="例如：6206-2RS × 2">
+          </label>
+          <label class="form-field">停机时长（小时）<em>*</em>
+            <input id="downTimeInput" type="number" min="0" step="0.5" inputmode="decimal" placeholder="例如：3">
+          </label>
+          <label class="form-field">验收人 <em>*</em>
+            <input id="acceptorInput" type="text" maxlength="30" placeholder="例如：王老师">
+          </label>
+          <label class="form-field">操作人
+            <input id="closeOperatorInput" type="text" maxlength="30" value="实训学生">
+          </label>
+          <label class="form-field span-2">遗留风险
+            <textarea id="residualRiskInput" rows="2" maxlength="300" placeholder="例如：试运行 30 分钟复测振动与温升"></textarea>
+          </label>
+        </div>
+        <div class="inline-alert" id="closeFormAlert" hidden></div>
+        <p class="form-hint">结案后系统会把根因与处置写入知识候选池，需管理员复核后入库。</p>
+        <footer class="modal-footer">
+          <button class="btn btn-ghost" id="modalCancelBtn" type="button">取消</button>
+          <button class="btn btn-primary" id="closeSubmitBtn" type="submit">确认结案并回流</button>
+        </footer>
+      </form>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

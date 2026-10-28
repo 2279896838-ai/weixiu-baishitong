@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>维修百事通 · 智能体问答</title>
+  <link rel="stylesheet" href="/static/agent.css" />
+</head>
+<body>
+  <header class="agent-header">
+    <div class="brand">
+      <div class="brand-mark">修</div>
+      <div class="brand-copy">
+        <h1>维修百事通 · 智能体问答</h1>
+        <p>一个会查知识库、会出点检表、会建工单的设备维护智能体</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="mode-badge" id="modeBadge"><span class="dot"></span><span id="modeText">连接中</span></span>
+      <select id="equipmentSelect" aria-label="当前设备"></select>
+      <a class="console-link" href="/">返回控制台</a>
+    </div>
+  </header>
+
+  <main class="agent-layout">
+    <section class="chat-panel">
+      <div class="chat-body" id="chatBody">
+        <div class="chat-empty" id="chatEmpty">
+          <div class="empty-icon">智</div>
+          <h2>把故障现象直接交给智能体</h2>
+          <p>它会自动选择工具：检索知识库、生成点检清单、查看看板、创建工单或进入排查引导。</p>
+          <div class="suggestions" id="suggestions">
+            <button type="button" data-prompt="连铸机结晶器液面老是波动，铸坯表面都乱了，什么原因？">连铸机液面波动</button>
+            <button type="button" data-prompt="精轧机 F3 轧制时振动大，板面有振痕">轧机振动</button>
+            <button type="button" data-prompt="板坯连铸机日点检要做哪些项目？">连铸日点检</button>
+            <button type="button" data-prompt="AGC 液压站压力波动，带我看一下异常看板">液压看板</button>
+          </div>
+          <p class="empty-hint">也可以直接输入任意设备故障、点检、工单或看板问题。</p>
+        </div>
+        <div class="messages" id="messages" aria-live="polite" aria-relevant="additions text"></div>
+      </div>
+      <form class="composer" id="chatForm" autocomplete="off">
+        <textarea id="chatInput" rows="1" maxlength="1000" aria-label="描述设备故障或维护问题" placeholder="描述设备故障，例如：连铸机结晶器液面波动，铸坯表面纵裂…"></textarea>
+        <div class="composer-actions">
+          <span class="char-count" id="charCount">0 / 1000</span>
+          <button class="send-btn" id="sendBtn" type="submit">发送</button>
+        </div>
+      </form>
+    </section>
+
+    <aside class="side-panel">
+      <section class="side-card">
+        <h3>智能体能力</h3>
+        <ul class="tool-list" id="toolList"></ul>
+      </section>
+      <section class="side-card">
+        <h3>运行信息</h3>
+        <dl class="meta-list">
+          <div><dt>会话</dt><dd id="sessionMeta">—</dd></div>
+          <div><dt>模式</dt><dd id="runMode">—</dd></div>
+          <div><dt>知识库</dt><dd id="kbMeta">—</dd></div>
+          <div><dt>工具调用</dt><dd id="toolCount">0 次</dd></div>
+        </dl>
+      </section>
+      <section class="side-card danger-card">
+        <h3>安全优先</h3>
+        <p>出现冒烟、明火、漏电、钢水喷溅、煤气异味或人员受伤时，智能体先拦截并给出停机、断电、撤离与转人工路径，不提供危险操作步骤。</p>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="agent-footer">
+    <span>维修百事通 · 智能体问答</span>
+    <span>离线优先 · 本地知识库 · 工具可审计</span>
+  </footer>
+
+  <script src="/static/agent.js"></script>
+</body>
+</html>

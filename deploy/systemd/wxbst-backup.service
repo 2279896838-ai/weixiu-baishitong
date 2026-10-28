@@ -1,0 +1,11 @@
+[Unit]
+Description=Weixiu Baishitong SQLite backup
+After=wxbst.service
+
+[Service]
+Type=oneshot
+User=wxbst
+Group=wxbst
+WorkingDirectory=/opt/wxbst
+EnvironmentFile=/etc/wxbst.env
+ExecStart=/usr/bin/python3 /opt/wxbst/scripts/backup_db.py --db ${WXBST_DB_PATH} --out /var/lib/wxbst/backups --keep 14

@@ -1,0 +1,24 @@
+[Unit]
+Description=Weixiu Baishitong API
+After=network.target
+
+[Service]
+Type=simple
+User=wxbst
+Group=wxbst
+WorkingDirectory=/opt/wxbst
+EnvironmentFile=/etc/wxbst.env
+ExecStart=/usr/bin/python3 /opt/wxbst/demo/server.py --host 127.0.0.1 --port 8787
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/wxbst
+StateDirectory=wxbst
+LimitNOFILE=65535
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target

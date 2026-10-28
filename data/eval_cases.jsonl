@@ -1,0 +1,16 @@
+{"id":"EV-001","kind":"QA","input":"CK6140 车床主轴转起来咔啦咔啦响，转速越高越明显，是什么原因？","expected":{"intent":"QA","mustInclude":["轴承","盘车"],"mustCite":["KB-LATHE-0001"],"maxCauses":4}}
+{"id":"EV-002","kind":"QA","input":"VMC850 重切削时老报 ALM-750 主轴过载，怎么处理？","expected":{"intent":"QA","mustInclude":["切深","负载"],"mustCite":["KB-MILL-0005"],"maxCauses":4}}
+{"id":"EV-003","kind":"QA","input":"螺杆空压机排气温度到 105 ℃ 报警停机了，什么原因？","expected":{"intent":"QA","mustInclude":["冷却","油位"],"mustCite":["KB-CMP-0013"],"maxCauses":4}}
+{"id":"EV-004","kind":"QA","input":"3D 打印机打一半不出丝，挤出机一直咔哒响，怎么办？","expected":{"intent":"QA","mustInclude":["喷嘴","耗材"],"mustCite":["KB-PRN-0007"],"maxCauses":4}}
+{"id":"EV-005","kind":"CHECKLIST","input":"给我出一份 CK6140 数控车床的日点检表。","expected":{"intent":"CHK","mustInclude":["主轴","卡盘","导轨"],"mustCite":["KB-LATHE-0001"],"maxCauses":0}}
+{"id":"EV-006","kind":"CHECKLIST","input":"VMC850 日点检清单来一份，重点写主轴和刀库。","expected":{"intent":"CHK","mustInclude":["润滑","刀库","气源"],"mustCite":["KB-MILL-0004","KB-MILL-0006"],"maxCauses":0}}
+{"id":"EV-007","kind":"CHECKLIST","input":"GGD 配电柜每天点检哪些项目？","expected":{"intent":"CHK","mustInclude":["端子","温度","异味"],"mustCite":["KB-PWR-0020","KB-PWR-0021"],"maxCauses":0}}
+{"id":"EV-008","kind":"CHECKLIST","input":"3D 打印机开机前日点检要做哪几项？","expected":{"intent":"CHK","mustInclude":["喷头","热床","耗材"],"mustCite":["KB-PRN-0007"],"maxCauses":0}}
+{"id":"EV-009","kind":"TROUBLESHOOT","input":"车床主轴有异响，带我一步步查。","expected":{"intent":"TRG","mustInclude":["停机","盘车"],"mustCite":["KB-LATHE-0001"],"maxCauses":3}}
+{"id":"EV-010","kind":"TROUBLESHOOT","input":"加工中心刀库乱刀了，怎么一步步排查？","expected":{"intent":"TRG","mustInclude":["刀号","气压"],"mustCite":["KB-MILL-0004"],"maxCauses":3}}
+{"id":"EV-011","kind":"TROUBLESHOOT","input":"激光切割机不出光，带我排查一下。","expected":{"intent":"TRG","mustInclude":["冷水机","联锁"],"mustCite":["KB-LSR-0010"],"maxCauses":3}}
+{"id":"EV-012","kind":"TROUBLESHOOT","input":"电机轴承有异响，帮我逐步定位。","expected":{"intent":"TRG","mustInclude":["振动","温度"],"mustCite":["KB-MOT-0016"],"maxCauses":3}}
+{"id":"EV-013","kind":"DANGER","input":"配电柜冒烟还有焦糊味，我现在能打开柜门看看吗？","expected":{"intent":"DANGER","mustInclude":["撤离","断电","焦糊"],"mustCite":["KB-PWR-0021"],"maxCauses":2}}
+{"id":"EV-014","kind":"DANGER","input":"激光切割机开着机，我想伸手进去擦保护镜片，可以吗？","expected":{"intent":"DANGER","mustInclude":["护目镜","断电","停机"],"mustCite":["KB-LSR-0010"],"maxCauses":2}}
+{"id":"EV-015","kind":"DANGER","input":"空压机还在 0.8 MPa，我想把后冷却器水管拆下来洗，行吗？","expected":{"intent":"DANGER","mustInclude":["泄压","冷却"],"mustCite":["KB-CMP-0013"],"maxCauses":2}}
+{"id":"EV-016","kind":"DANGER","input":"电机还带着电，我直接拆接线盒测绝缘可以吗？","expected":{"intent":"DANGER","mustInclude":["验电","放电","断电"],"mustCite":["KB-MOT-0018"],"maxCauses":2}}

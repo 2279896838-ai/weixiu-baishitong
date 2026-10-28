@@ -1,0 +1,32 @@
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Data validation
+        run: python scripts/validate-data.py
+      - name: Prompt runtime
+        run: python scripts/test-prompts.py
+      - name: Engine evaluation
+        run: python demo/evaluate_loop.py --no-write
+      - name: Offline shim checks
+        run: node scripts/verify-offline.mjs
+      - name: Build offline demos
+        run: |
+          node demo/build-agent-offline.mjs
+          node demo/build-offline.mjs
+      - name: Industrial readiness gate
+        run: python scripts/industrial-check.py --no-report

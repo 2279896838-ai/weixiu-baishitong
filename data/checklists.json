@@ -1,0 +1,1492 @@
+{
+  "LATHE": {
+    "D": [
+      {
+        "code": "CHK-LATHE-D-001",
+        "name": "主轴异响与温升",
+        "location": "主轴箱",
+        "criterion": "空运转 500 r/min 无连续咔啦声，噪声 ≤80 dB(A)；主轴箱温度 ≤60 ℃",
+        "method": "听音并用红外测温枪测主轴箱",
+        "tool": "耳听、红外测温枪",
+        "judgment": "无异响且温度 ≤60 ℃",
+        "abnormalAction": "立即按急停并报实训教师，禁止继续开机",
+        "frequency": "D",
+        "safetyTip": "运行中禁止打开主轴箱盖与防护门；测温保持 0.3 m 距离"
+      },
+      {
+        "code": "CHK-LATHE-D-002",
+        "name": "卡盘与工件装夹",
+        "location": "卡盘",
+        "criterion": "卡爪无裂纹，工件悬伸 ≤3 倍直径，扳手加力后无松动",
+        "method": "停机后目视并用卡盘扳手复紧",
+        "tool": "卡盘扳手、目视",
+        "judgment": "装夹牢固、卡爪无裂纹",
+        "abnormalAction": "停机重新装夹；卡爪裂纹立即停用报修",
+        "frequency": "D",
+        "safetyTip": "必须待卡盘完全停止后检查，禁止用手触摸卡爪"
+      },
+      {
+        "code": "CHK-LATHE-D-003",
+        "name": "刀架换刀与刀位",
+        "location": "刀架",
+        "criterion": "4 个刀位手动换刀均到位，刀位显示与实际一致，无异响",
+        "method": "手动换刀 1 轮并对照面板刀位",
+        "tool": "目视、操作面板",
+        "judgment": "4 工位全部到位且显示一致",
+        "abnormalAction": "卡刀立即按急停并报修",
+        "frequency": "D",
+        "safetyTip": "换刀时手离开刀架行程范围，禁止伸手扶刀"
+      },
+      {
+        "code": "CHK-LATHE-D-004",
+        "name": "导轨润滑",
+        "location": "床身导轨",
+        "criterion": "油位在油标 1/2–2/3，导轨面有连续油膜",
+        "method": "目视油标与导轨面",
+        "tool": "目视、手电",
+        "judgment": "油位达标且油膜连续",
+        "abnormalAction": "补 32# 导轨油并记录；仍无油膜报修润滑泵",
+        "frequency": "D",
+        "safetyTip": "加油须停机断电，及时清理地面防滑倒"
+      },
+      {
+        "code": "CHK-LATHE-D-005",
+        "name": "切削液",
+        "location": "冷却液箱",
+        "criterion": "液位 ≥2/3，无浮油、无臭味，喷嘴对准刀尖",
+        "method": "目视液位、液面与喷嘴方向",
+        "tool": "目视",
+        "judgment": "液位达标、无变质",
+        "abnormalAction": "补液或更换切削液，清理浮油",
+        "frequency": "D",
+        "safetyTip": "戴护目镜与手套，防止切削液飞溅"
+      },
+      {
+        "code": "CHK-LATHE-D-006",
+        "name": "防护门与联锁外观",
+        "location": "工作区",
+        "criterion": "门体完整、插销无变形，门开时联锁指示灯熄灭",
+        "method": "目视并开关门 1 次观察指示灯",
+        "tool": "目视",
+        "judgment": "门关闭到位、联锁指示正常",
+        "abnormalAction": "联锁失效立即停机报修",
+        "frequency": "D",
+        "safetyTip": "严禁短接联锁，严禁开门运行"
+      },
+      {
+        "code": "CHK-LATHE-D-007",
+        "name": "报警与气源压力",
+        "location": "操作面板、气动柜",
+        "criterion": "无 ALM 报警；气源压力 0.5–0.7 MPa",
+        "method": "查看报警页面与压力表",
+        "tool": "操作面板、压力表",
+        "judgment": "无报警、压力在范围内",
+        "abnormalAction": "记录报警号并报修；气压低查气源与过滤减压阀",
+        "frequency": "D",
+        "safetyTip": "禁止屏蔽报警；气路检修前泄压"
+      },
+      {
+        "code": "CHK-LATHE-D-008",
+        "name": "排屑与床身清洁",
+        "location": "排屑口、床身",
+        "criterion": "无缠绕铁屑、无积水积油，排屑顺畅",
+        "method": "目视并用钩子清理缠绕铁屑",
+        "tool": "目视、铁屑钩",
+        "judgment": "排屑顺畅、无积液",
+        "abnormalAction": "断电清理；积水查冷却液管路渗漏",
+        "frequency": "D",
+        "safetyTip": "断电后清理，戴防割手套"
+      }
+    ],
+    "W": [
+      {
+        "code": "CHK-LATHE-W-001",
+        "name": "主轴径向跳动",
+        "location": "主轴锥孔",
+        "criterion": "径向跳动 ≤0.01 mm，轴向窜动 ≤0.01 mm",
+        "method": "断电挂牌后百分表触主轴外圆，手动盘车读数",
+        "tool": "百分表、磁性表座",
+        "judgment": "跳动 ≤0.01 mm",
+        "abnormalAction": "超差停机，联系维修人员拆检",
+        "frequency": "W",
+        "safetyTip": "必须断电挂牌上锁，教师在场，禁止点动主轴"
+      },
+      {
+        "code": "CHK-LATHE-W-002",
+        "name": "卡爪磨损与卡盘螺栓",
+        "location": "卡盘",
+        "criterion": "爪面磨损 ≤0.5 mm，M10 螺栓力矩 40–45 N·m",
+        "method": "卡尺测爪面，力矩扳手复紧",
+        "tool": "卡尺、力矩扳手",
+        "judgment": "磨损与力矩达标",
+        "abnormalAction": "更换卡爪或按力矩复紧",
+        "frequency": "W",
+        "safetyTip": "断电挂牌；防止卡盘附件坠落砸伤"
+      },
+      {
+        "code": "CHK-LATHE-W-003",
+        "name": "刀架重复定位",
+        "location": "刀架",
+        "criterion": "重复定位误差 ≤0.01 mm",
+        "method": "百分表顶刀架基准面，连续换刀 5 次读数",
+        "tool": "百分表",
+        "judgment": "误差 ≤0.01 mm",
+        "abnormalAction": "调整刀架预紧或报修",
+        "frequency": "W",
+        "safetyTip": "断电挂牌，换刀时手离开刀架行程"
+      },
+      {
+        "code": "CHK-LATHE-W-004",
+        "name": "导轨润滑泵与油路",
+        "location": "润滑站",
+        "criterion": "点动油泵 30 s 内建立压力 ≥0.1 MPa，各导轨面有油膜",
+        "method": "点动油泵观察压力表与导轨面",
+        "tool": "压力表、目视",
+        "judgment": "压力建立、油膜连续",
+        "abnormalAction": "清洗滤网或更换油泵",
+        "frequency": "W",
+        "safetyTip": "断电挂牌，防止油管爆裂喷油"
+      },
+      {
+        "code": "CHK-LATHE-W-005",
+        "name": "防护门联锁功能",
+        "location": "防护门",
+        "criterion": "开门时主轴不能启动，关门后启动正常",
+        "method": "门开状态按启动，观察是否拒绝启动",
+        "tool": "操作面板",
+        "judgment": "联锁有效",
+        "abnormalAction": "联锁失效立即停用并报修",
+        "frequency": "W",
+        "safetyTip": "测试时卡盘内不得装工件，教师在场"
+      }
+    ]
+  },
+  "MILL": {
+    "D": [
+      {
+        "code": "CHK-MILL-D-001",
+        "name": "主轴异响与振动",
+        "location": "主轴",
+        "criterion": "空运转 8000 r/min 无异响，振动烈度 ≤2.8 mm/s",
+        "method": "听音并用测振仪测主轴前端",
+        "tool": "耳听、测振仪",
+        "judgment": "无异响、振动 ≤2.8 mm/s",
+        "abnormalAction": "降速停机并报修",
+        "frequency": "D",
+        "safetyTip": "升速与测振时关闭防护门，禁止靠近主轴"
+      },
+      {
+        "code": "CHK-MILL-D-002",
+        "name": "集中润滑压力",
+        "location": "主轴润滑站",
+        "criterion": "压力 2.0–2.5 MPa",
+        "method": "查看润滑压力表",
+        "tool": "压力表",
+        "judgment": "压力在 2.0–2.5 MPa",
+        "abnormalAction": "低于 2.0 MPa 停机报修，并查油位与吸油滤网",
+        "frequency": "D",
+        "safetyTip": "补油时断电，防止高压油喷溅"
+      },
+      {
+        "code": "CHK-MILL-D-003",
+        "name": "气源压力",
+        "location": "气动柜",
+        "criterion": "压力 0.5–0.7 MPa",
+        "method": "查看气源压力表",
+        "tool": "压力表",
+        "judgment": "压力在 0.5–0.7 MPa",
+        "abnormalAction": "低于 0.5 MPa 停机报修，检查过滤减压阀",
+        "frequency": "D",
+        "safetyTip": "气路检修前泄压"
+      },
+      {
+        "code": "CHK-MILL-D-004",
+        "name": "冷却液温度与液位",
+        "location": "冷却液箱",
+        "criterion": "18–25 ℃，液位 ≥2/3",
+        "method": "查看温控显示与液位",
+        "tool": "温度计、目视",
+        "judgment": "温度与液位达标",
+        "abnormalAction": "超温查冷却机，补液至 2/3 以上",
+        "frequency": "D",
+        "safetyTip": "防飞溅，戴护目镜"
+      },
+      {
+        "code": "CHK-MILL-D-005",
+        "name": "刀库刀号一致性",
+        "location": "刀库",
+        "criterion": "面板刀号与刀套号一致，刀套无缺刀、无铁屑",
+        "method": "手动模式逐位核对 24 个刀套",
+        "tool": "操作面板、目视",
+        "judgment": "24 位刀号一致",
+        "abnormalAction": "立即停止换刀并按《刀库乱刀》知识条目处置",
+        "frequency": "D",
+        "safetyTip": "禁止将手伸入刀库；核对时主轴停止并切手动"
+      },
+      {
+        "code": "CHK-MILL-D-006",
+        "name": "报警代码",
+        "location": "操作面板",
+        "criterion": "无 ALM 报警，重点记录 ALM-750、ALM-1027",
+        "method": "查看报警历史页面",
+        "tool": "操作面板",
+        "judgment": "无未处理报警",
+        "abnormalAction": "记录代码并报修，禁止屏蔽或反复复位",
+        "frequency": "D",
+        "safetyTip": "禁止复位后继续带载运行"
+      },
+      {
+        "code": "CHK-MILL-D-007",
+        "name": "防护门与光栅",
+        "location": "工作区",
+        "criterion": "门体完好，光栅无遮挡报警，开门主轴停止",
+        "method": "目视并开关门 1 次",
+        "tool": "目视",
+        "judgment": "联锁有效",
+        "abnormalAction": "失效立即停机报修",
+        "frequency": "D",
+        "safetyTip": "严禁短接光栅与门锁"
+      },
+      {
+        "code": "CHK-MILL-D-008",
+        "name": "工作台与排屑器",
+        "location": "工作台、排屑口",
+        "criterion": "台面无积屑，排屑器运行平稳无卡滞",
+        "method": "目视并听排屑器运行声音",
+        "tool": "目视、耳听",
+        "judgment": "无积屑、无卡滞",
+        "abnormalAction": "断电清理；卡滞报修",
+        "frequency": "D",
+        "safetyTip": "断电后清理，防止螺旋排屑器绞伤"
+      }
+    ],
+    "W": [
+      {
+        "code": "CHK-MILL-W-001",
+        "name": "主轴径向跳动",
+        "location": "主轴锥孔",
+        "criterion": "径向跳动 ≤0.01 mm",
+        "method": "百分表触检棒，手动转动主轴读数",
+        "tool": "百分表、检棒",
+        "judgment": "≤0.01 mm",
+        "abnormalAction": "超差报修，禁止加工精密件",
+        "frequency": "W",
+        "safetyTip": "断电挂牌，教师在场"
+      },
+      {
+        "code": "CHK-MILL-W-002",
+        "name": "换刀动作与气压",
+        "location": "刀库",
+        "criterion": "连续换刀 20 次无中断，气压 0.5–0.7 MPa",
+        "method": "空载换刀循环并观察压力表",
+        "tool": "操作面板、压力表",
+        "judgment": "20 次全部到位",
+        "abnormalAction": "中断即停，查气压与刀臂",
+        "frequency": "W",
+        "safetyTip": "换刀时人员离开刀库行程范围"
+      },
+      {
+        "code": "CHK-MILL-W-003",
+        "name": "集中润滑分配器",
+        "location": "各轴导轨",
+        "criterion": "分配器逐点出油，导轨面有油膜",
+        "method": "点动润滑泵观察分配器出油",
+        "tool": "目视",
+        "judgment": "各点均出油",
+        "abnormalAction": "堵塞清洗或更换分配器",
+        "frequency": "W",
+        "safetyTip": "断电挂牌，防止油液喷溅"
+      },
+      {
+        "code": "CHK-MILL-W-004",
+        "name": "冷却液浓度",
+        "location": "冷却液箱",
+        "criterion": "折光仪读数 5%–8%",
+        "method": "取液测浓度",
+        "tool": "折光仪",
+        "judgment": "5%–8%",
+        "abnormalAction": "调整浓度或更换切削液",
+        "frequency": "W",
+        "safetyTip": "戴手套与护目镜，废液按危废处理"
+      },
+      {
+        "code": "CHK-MILL-W-005",
+        "name": "急停与门联锁功能",
+        "location": "操作面板、防护门",
+        "criterion": "急停按下主轴 0.5 s 内停止，开门主轴不能启动",
+        "method": "功能测试并计时",
+        "tool": "秒表、操作面板",
+        "judgment": "急停与联锁有效",
+        "abnormalAction": "失效立即停用报修",
+        "frequency": "W",
+        "safetyTip": "测试前清空工作台，教师在场"
+      }
+    ]
+  },
+  "PRN": {
+    "D": [
+      {
+        "code": "CHK-PRN-D-001",
+        "name": "喷头温度",
+        "location": "喷头",
+        "criterion": "PLA 设定 200–215 ℃，显示偏差 ≤5 ℃",
+        "method": "查看屏幕并用测温枪比对",
+        "tool": "操作面板、测温枪",
+        "judgment": "温度在范围内、偏差 ≤5 ℃",
+        "abnormalAction": "偏差大校验热电偶或更换喷头",
+        "frequency": "D",
+        "safetyTip": "喷头高温，禁止触碰；测温保持 0.1 m"
+      },
+      {
+        "code": "CHK-PRN-D-002",
+        "name": "热床温度与首层",
+        "location": "热床",
+        "criterion": "PLA 热床 60 ℃，首层无翘边、无脱落",
+        "method": "查看屏幕并观察首层",
+        "tool": "操作面板、目视",
+        "judgment": "温度达标、附着良好",
+        "abnormalAction": "重新调平或调整 Z 偏移",
+        "frequency": "D",
+        "safetyTip": "待热床降至 40 ℃ 以下再取件"
+      },
+      {
+        "code": "CHK-PRN-D-003",
+        "name": "耗材直径与余量",
+        "location": "料架",
+        "criterion": "直径 1.75±0.05 mm，余量 ≥50 g",
+        "method": "卡尺测三点并观察料盘",
+        "tool": "卡尺",
+        "judgment": "直径达标、余量充足",
+        "abnormalAction": "更换耗材或接料",
+        "frequency": "D",
+        "safetyTip": "剪料时防止料丝弹伤"
+      },
+      {
+        "code": "CHK-PRN-D-004",
+        "name": "挤出齿轮与进丝",
+        "location": "挤出机",
+        "criterion": "齿间无塑料粉末，进丝顺畅无打滑",
+        "method": "目视齿轮并手动进丝",
+        "tool": "目视",
+        "judgment": "无啃料、进丝顺畅",
+        "abnormalAction": "清理齿间碎屑并调整张力",
+        "frequency": "D",
+        "safetyTip": "断电后操作，防止齿轮夹手"
+      },
+      {
+        "code": "CHK-PRN-D-005",
+        "name": "喷嘴渗漏与挂料",
+        "location": "喷嘴",
+        "criterion": "擦拭后 5 min 无垂丝、无积料",
+        "method": "无尘布擦拭后观察",
+        "tool": "无尘布",
+        "judgment": "无渗漏、无积料",
+        "abnormalAction": "清理喷嘴或更换",
+        "frequency": "D",
+        "safetyTip": "待喷头降至 60 ℃ 以下操作，戴耐热手套"
+      },
+      {
+        "code": "CHK-PRN-D-006",
+        "name": "运动皮带与异响",
+        "location": "X/Y 轴",
+        "criterion": "移动无异响，皮带挠度 ≤5 mm",
+        "method": "手动移动并按压皮带",
+        "tool": "目视、手感",
+        "judgment": "无旷量、无异响",
+        "abnormalAction": "张紧皮带或更换",
+        "frequency": "D",
+        "safetyTip": "断电后移动，防止夹手"
+      },
+      {
+        "code": "CHK-PRN-D-007",
+        "name": "散热风扇",
+        "location": "喷头散热风扇",
+        "criterion": "风扇运转，风道无遮挡",
+        "method": "目视并感受出风",
+        "tool": "目视",
+        "judgment": "风扇运转正常",
+        "abnormalAction": "清理风道或更换风扇",
+        "frequency": "D",
+        "safetyTip": "禁止手指伸入风扇"
+      },
+      {
+        "code": "CHK-PRN-D-008",
+        "name": "导轨与平台清洁",
+        "location": "打印仓",
+        "criterion": "导轨无粉尘，平台无残料",
+        "method": "目视并用毛刷清理",
+        "tool": "毛刷",
+        "judgment": "清洁无残料",
+        "abnormalAction": "清理并润滑导轨",
+        "frequency": "D",
+        "safetyTip": "断电清理，防止划伤平台"
+      }
+    ],
+    "W": []
+  },
+  "LSR": {
+    "D": [
+      {
+        "code": "CHK-LSR-D-001",
+        "name": "冷却水温与流量",
+        "location": "冷水机",
+        "criterion": "水温 20–25 ℃，无流量报警",
+        "method": "查看温控显示与报警灯",
+        "tool": "冷水机面板",
+        "judgment": "水温达标、无报警",
+        "abnormalAction": "超温停机，清洗滤网并补水",
+        "frequency": "D",
+        "safetyTip": "带电部位禁止开盖"
+      },
+      {
+        "code": "CHK-LSR-D-002",
+        "name": "保护镜片外观",
+        "location": "切割头",
+        "criterion": "镜片无烧点、无油污（通过观察窗）",
+        "method": "目视观察窗",
+        "tool": "目视、手电",
+        "judgment": "镜片洁净",
+        "abnormalAction": "停机更换镜片",
+        "frequency": "D",
+        "safetyTip": "不得在出光状态开盖检查"
+      },
+      {
+        "code": "CHK-LSR-D-003",
+        "name": "辅助气压",
+        "location": "气路",
+        "criterion": "O2/N2 压力 0.8–1.2 MPa",
+        "method": "查看气路压力表",
+        "tool": "压力表",
+        "judgment": "压力在 0.8–1.2 MPa",
+        "abnormalAction": "气压低查气瓶与减压阀",
+        "frequency": "D",
+        "safetyTip": "氧气禁油，泄压后检修"
+      },
+      {
+        "code": "CHK-LSR-D-004",
+        "name": "红光同轴",
+        "location": "切割头",
+        "criterion": "红光与喷嘴同轴，偏差 ≤0.5 mm",
+        "method": "贴标定纸打点观察",
+        "tool": "红光、标定纸",
+        "judgment": "偏差 ≤0.5 mm",
+        "abnormalAction": "调整光路或报修",
+        "frequency": "D",
+        "safetyTip": "关闭激光使能，仅开红光"
+      },
+      {
+        "code": "CHK-LSR-D-005",
+        "name": "防护门与联锁",
+        "location": "机床",
+        "criterion": "门闭合、联锁灯亮，开门不出光",
+        "method": "目视并开关门 1 次",
+        "tool": "目视",
+        "judgment": "联锁有效",
+        "abnormalAction": "失效停机报修",
+        "frequency": "D",
+        "safetyTip": "严禁短接联锁"
+      },
+      {
+        "code": "CHK-LSR-D-006",
+        "name": "报警与气瓶余压",
+        "location": "操作面板、气瓶",
+        "criterion": "无报警，气瓶余压 ≥1 MPa",
+        "method": "查看屏幕与气瓶压力表",
+        "tool": "操作面板、压力表",
+        "judgment": "无报警、余压充足",
+        "abnormalAction": "更换气瓶并记录报警",
+        "frequency": "D",
+        "safetyTip": "换瓶时泄压，防止高压气体伤人"
+      },
+      {
+        "code": "CHK-LSR-D-007",
+        "name": "首件切割断面",
+        "location": "出料口",
+        "criterion": "挂渣 ≤0.2 mm，断面无发黄",
+        "method": "首件目视并用手触摸",
+        "tool": "目视、样板",
+        "judgment": "挂渣与断面达标",
+        "abnormalAction": "调整焦点、气压与切割速度",
+        "frequency": "D",
+        "safetyTip": "取件待冷却，戴防割手套"
+      },
+      {
+        "code": "CHK-LSR-D-008",
+        "name": "床身与导轨清洁",
+        "location": "床身",
+        "criterion": "无铁屑、无油污，导轨润滑良好",
+        "method": "目视",
+        "tool": "毛刷",
+        "judgment": "清洁且有油膜",
+        "abnormalAction": "断电清理并润滑",
+        "frequency": "D",
+        "safetyTip": "断电清理，防止激光反射"
+      }
+    ],
+    "W": []
+  },
+  "CMP": {
+    "D": [
+      {
+        "code": "CHK-CMP-D-001",
+        "name": "排气温度",
+        "location": "控制面板",
+        "criterion": "≤95 ℃，105 ℃ 报警停机",
+        "method": "查看排气温度显示",
+        "tool": "控制面板",
+        "judgment": "≤95 ℃",
+        "abnormalAction": "超温按《排气温度高》知识条目处置",
+        "frequency": "D",
+        "safetyTip": "高温部件禁止触碰"
+      },
+      {
+        "code": "CHK-CMP-D-002",
+        "name": "排气压力",
+        "location": "控制面板",
+        "criterion": "加载 0.6–0.8 MPa，卸载动作正常",
+        "method": "查看压力并听加载/卸载动作",
+        "tool": "控制面板",
+        "judgment": "压力与动作正常",
+        "abnormalAction": "压力低查进气阀与空滤",
+        "frequency": "D",
+        "safetyTip": "带压禁止紧固管路"
+      },
+      {
+        "code": "CHK-CMP-D-003",
+        "name": "油位与油色",
+        "location": "油位视窗",
+        "criterion": "油位 1/2–2/3，油透明无乳化",
+        "method": "目视视窗",
+        "tool": "目视",
+        "judgment": "油位与油色达标",
+        "abnormalAction": "补油或换油",
+        "frequency": "D",
+        "safetyTip": "停机泄压后补油"
+      },
+      {
+        "code": "CHK-CMP-D-004",
+        "name": "空滤压差",
+        "location": "进气口",
+        "criterion": "≤0.008 MPa（>0.01 MPa 更换）",
+        "method": "查看压差表或压差指示器",
+        "tool": "压差表",
+        "judgment": "≤0.008 MPa",
+        "abnormalAction": "更换空滤芯",
+        "frequency": "D",
+        "safetyTip": "停机后更换，防止异物吸入"
+      },
+      {
+        "code": "CHK-CMP-D-005",
+        "name": "冷却水温度",
+        "location": "冷却器",
+        "criterion": "进水温度 ≤35 ℃",
+        "method": "查看冷却水温度计",
+        "tool": "温度计",
+        "judgment": "≤35 ℃",
+        "abnormalAction": "清洗滤网并检查水温",
+        "frequency": "D",
+        "safetyTip": "防烫伤"
+      },
+      {
+        "code": "CHK-CMP-D-006",
+        "name": "泄漏与异响",
+        "location": "机组、管路",
+        "criterion": "无油水泄漏，无敲击异响",
+        "method": "目视并听机组运行声音",
+        "tool": "目视、耳听",
+        "judgment": "无泄漏、无异响",
+        "abnormalAction": "停机泄压后报修",
+        "frequency": "D",
+        "safetyTip": "带压带热部位禁止拆卸"
+      },
+      {
+        "code": "CHK-CMP-D-007",
+        "name": "冷凝水排放",
+        "location": "储气罐、油水分离器",
+        "criterion": "每班排放至无连续水",
+        "method": "手动排水观察",
+        "tool": "排水阀",
+        "judgment": "排尽冷凝水",
+        "abnormalAction": "排水阀堵塞时清洗",
+        "frequency": "D",
+        "safetyTip": "排水时防止高压气体与热水喷出"
+      },
+      {
+        "code": "CHK-CMP-D-008",
+        "name": "安全阀与压力表",
+        "location": "储气罐",
+        "criterion": "安全阀铅封完好，压力表指针归零",
+        "method": "目视铅封与表针",
+        "tool": "目视",
+        "judgment": "铅封完好、表针正常",
+        "abnormalAction": "报修校验，禁止自行调整",
+        "frequency": "D",
+        "safetyTip": "安全阀不得随意调整或堵死"
+      }
+    ],
+    "W": []
+  },
+  "MOT": {
+    "D": [
+      {
+        "code": "CHK-MOT-D-001",
+        "name": "轴承温度",
+        "location": "前后轴承",
+        "criterion": "≤80 ℃",
+        "method": "红外测温枪测两端轴承位",
+        "tool": "红外测温枪",
+        "judgment": "≤80 ℃",
+        "abnormalAction": "超温停机报修",
+        "frequency": "D",
+        "safetyTip": "运行中保持距离，禁止触摸"
+      },
+      {
+        "code": "CHK-MOT-D-002",
+        "name": "振动烈度",
+        "location": "轴承座、机脚",
+        "criterion": "≤4.5 mm/s",
+        "method": "测振仪测水平、垂直、轴向三点",
+        "tool": "测振仪",
+        "judgment": "≤4.5 mm/s",
+        "abnormalAction": "超标停机查对中与轴承",
+        "frequency": "D",
+        "safetyTip": "测振时远离联轴器"
+      },
+      {
+        "code": "CHK-MOT-D-003",
+        "name": "轴承异响",
+        "location": "轴承部位",
+        "criterion": "无周期性冲击声、无尖叫",
+        "method": "听音棒听两端轴承",
+        "tool": "听音棒",
+        "judgment": "无异常声",
+        "abnormalAction": "停机报修",
+        "frequency": "D",
+        "safetyTip": "听音时不得触碰旋转部件"
+      },
+      {
+        "code": "CHK-MOT-D-004",
+        "name": "三相电流",
+        "location": "配电支路",
+        "criterion": "不平衡 ≤10%，≤铭牌 15.4 A",
+        "method": "钳形表测三相电流",
+        "tool": "钳形表",
+        "judgment": "电流平衡且不超额定",
+        "abnormalAction": "超载停机查负载与电压",
+        "frequency": "D",
+        "safetyTip": "站在绝缘垫上，禁止触碰裸导体"
+      },
+      {
+        "code": "CHK-MOT-D-005",
+        "name": "外壳温度与散热",
+        "location": "机身、风罩",
+        "criterion": "外壳 ≤80 ℃，风罩无积尘",
+        "method": "红外测温并目视风罩",
+        "tool": "红外测温枪",
+        "judgment": "温度达标、风道畅通",
+        "abnormalAction": "清理风罩并检查风扇",
+        "frequency": "D",
+        "safetyTip": "运行中禁止将手伸入风罩"
+      },
+      {
+        "code": "CHK-MOT-D-006",
+        "name": "接线盒与电缆",
+        "location": "接线盒",
+        "criterion": "无烧痕、无油污，格兰头紧固",
+        "method": "目视接线盒与电缆入口",
+        "tool": "目视",
+        "judgment": "无烧痕、密封完好",
+        "abnormalAction": "停电处理并报修",
+        "frequency": "D",
+        "safetyTip": "禁止带电开盖"
+      },
+      {
+        "code": "CHK-MOT-D-007",
+        "name": "地脚与联轴器护罩",
+        "location": "机脚",
+        "criterion": "地脚螺栓无松动，联轴器护罩完好",
+        "method": "目视并扳手点检",
+        "tool": "扳手、目视",
+        "judgment": "紧固、护罩完好",
+        "abnormalAction": "停机复紧或补装护罩",
+        "frequency": "D",
+        "safetyTip": "运行中禁止靠近联轴器"
+      },
+      {
+        "code": "CHK-MOT-D-008",
+        "name": "气味与环境",
+        "location": "机组周围",
+        "criterion": "无焦糊味，通风良好，无积水",
+        "method": "闻气味并目视环境",
+        "tool": "嗅觉、目视",
+        "judgment": "无异味、环境干燥",
+        "abnormalAction": "异味立即停机断电并报修",
+        "frequency": "D",
+        "safetyTip": "焦糊味按电气隐患处理，先断电"
+      }
+    ],
+    "W": []
+  },
+  "PWR": {
+    "D": [
+      {
+        "code": "CHK-PWR-D-001",
+        "name": "柜内温度",
+        "location": "柜体",
+        "criterion": "≤40 ℃",
+        "method": "柜外红外测温或柜内温度计",
+        "tool": "温度计、红外测温枪",
+        "judgment": "≤40 ℃",
+        "abnormalAction": "超温停电开柜通风并报修",
+        "frequency": "D",
+        "safetyTip": "不得在带电状态开柜"
+      },
+      {
+        "code": "CHK-PWR-D-002",
+        "name": "端子温度",
+        "location": "出线端子",
+        "criterion": "≤70 ℃，相间温差 ≤10 K",
+        "method": "红外测温仪逐相测量",
+        "tool": "红外测温仪",
+        "judgment": "温度与温差达标",
+        "abnormalAction": "停电复紧端子",
+        "frequency": "D",
+        "safetyTip": "保持 ≥0.5 m 距离，禁止开柜门测温"
+      },
+      {
+        "code": "CHK-PWR-D-003",
+        "name": "母排与接线外观",
+        "location": "柜内（观察窗）",
+        "criterion": "无变色、无烧痕、无放电痕迹",
+        "method": "通过观察窗目视",
+        "tool": "手电",
+        "judgment": "外观正常",
+        "abnormalAction": "停电检查并更换",
+        "frequency": "D",
+        "safetyTip": "禁止将头、手伸入柜内"
+      },
+      {
+        "code": "CHK-PWR-D-004",
+        "name": "异味与异响",
+        "location": "柜体周围",
+        "criterion": "无焦糊味、无放电声",
+        "method": "闻气味并听柜内声音",
+        "tool": "嗅觉、耳听",
+        "judgment": "无异味异响",
+        "abnormalAction": "立即撤离并报教师",
+        "frequency": "D",
+        "safetyTip": "冒烟焦糊按电气火灾处理，禁用水"
+      },
+      {
+        "code": "CHK-PWR-D-005",
+        "name": "电压与指示灯",
+        "location": "面板",
+        "criterion": "三相 380–420 V，指示正常",
+        "method": "查看电压表与指示灯",
+        "tool": "面板",
+        "judgment": "电压在范围内",
+        "abnormalAction": "记录并报修",
+        "frequency": "D",
+        "safetyTip": "禁止带负荷拉合隔离开关"
+      },
+      {
+        "code": "CHK-PWR-D-006",
+        "name": "柜门锁具与标识",
+        "location": "柜体",
+        "criterion": "门锁完好，警示标识清晰，柜前 1 m 无堆物",
+        "method": "目视门锁、标识与通道",
+        "tool": "目视",
+        "judgment": "门锁与通道达标",
+        "abnormalAction": "清理通道并修复门锁",
+        "frequency": "D",
+        "safetyTip": "柜前不得堆放易燃物"
+      },
+      {
+        "code": "CHK-PWR-D-007",
+        "name": "接地与 PE 线",
+        "location": "柜体",
+        "criterion": "接地线连接可靠，黄绿标识完好",
+        "method": "目视并扳手点检",
+        "tool": "扳手、目视",
+        "judgment": "接地可靠",
+        "abnormalAction": "停电复紧或补接",
+        "frequency": "D",
+        "safetyTip": "禁止带电拆接接地线"
+      },
+      {
+        "code": "CHK-PWR-D-008",
+        "name": "断路器位置",
+        "location": "面板",
+        "criterion": "开关位置与运行方式一致，无脱扣指示",
+        "method": "目视开关与脱扣指示",
+        "tool": "目视",
+        "judgment": "位置正确、无脱扣",
+        "abnormalAction": "跳闸查明原因后送电",
+        "frequency": "D",
+        "safetyTip": "禁止强行合闸，禁止带负荷拉闸"
+      }
+    ],
+    "W": [
+      {
+        "code": "CHK-PWR-W-001",
+        "name": "端子力矩复紧",
+        "location": "出线端子",
+        "criterion": "M8 螺栓 20–25 N·m，M6 螺栓 10–12 N·m",
+        "method": "停电验电挂牌后用力矩扳手复紧",
+        "tool": "力矩扳手",
+        "judgment": "力矩达标",
+        "abnormalAction": "烧蚀端子更换",
+        "frequency": "W",
+        "safetyTip": "必须停电验电挂牌上锁，教师与安全员在场"
+      },
+      {
+        "code": "CHK-PWR-W-002",
+        "name": "绝缘电阻",
+        "location": "出线回路",
+        "criterion": "500 V 摇表 ≥0.5 MΩ",
+        "method": "断开负载，测相间与对地绝缘",
+        "tool": "500 V 摇表",
+        "judgment": "≥0.5 MΩ",
+        "abnormalAction": "低于 0.5 MΩ 禁止送电并查线路",
+        "frequency": "W",
+        "safetyTip": "测试后对地放电，防止残余电荷伤人"
+      },
+      {
+        "code": "CHK-PWR-W-003",
+        "name": "断路器脱扣试验",
+        "location": "断路器",
+        "criterion": "按试验按钮正常脱扣，复位后合闸",
+        "method": "功能测试",
+        "tool": "断路器试验按钮",
+        "judgment": "脱扣与复位正常",
+        "abnormalAction": "失效更换同规格断路器",
+        "frequency": "W",
+        "safetyTip": "试验前确认负载允许停电并通知使用方"
+      },
+      {
+        "code": "CHK-PWR-W-004",
+        "name": "母排温升",
+        "location": "母排",
+        "criterion": "温升 ≤70 K，相间温差 ≤10 K",
+        "method": "负载状态下红外测温",
+        "tool": "红外测温仪",
+        "judgment": "温升与温差达标",
+        "abnormalAction": "停电复紧或更换母排",
+        "frequency": "W",
+        "safetyTip": "保持安全距离，禁止开柜"
+      },
+      {
+        "code": "CHK-PWR-W-005",
+        "name": "柜内清洁与封堵",
+        "location": "柜体",
+        "criterion": "无积尘，进出线孔封堵完好，无小动物痕迹",
+        "method": "停电后吹扫并检查封堵",
+        "tool": "吸尘器、毛刷",
+        "judgment": "清洁、封堵完好",
+        "abnormalAction": "补封堵并投放驱避剂",
+        "frequency": "W",
+        "safetyTip": "停电验电挂牌，戴防尘口罩"
+      }
+    ]
+  },
+  "CCM": {
+    "D": [
+      {
+        "code": "CHK-CCM-D-001",
+        "name": "结晶器铜板与液面",
+        "location": "结晶器",
+        "criterion": "铜板无严重磨损/镀层剥落，液面波动 ≤±3 mm",
+        "method": "停机检查铜板并查看液面曲线",
+        "tool": "目视、液面曲线",
+        "judgment": "铜板磨损 ≤0.5 mm，液面稳定",
+        "abnormalAction": "磨损超标立即停机换铜板；液面波动大时降拉速并通知机长",
+        "frequency": "D",
+        "safetyTip": "结晶器区域高温，必须穿阻燃服、戴面罩；禁止平台积水"
+      },
+      {
+        "code": "CHK-CCM-D-002",
+        "name": "结晶器振动装置",
+        "location": "振动台",
+        "criterion": "振幅偏差 ≤±0.1 mm，振动曲线无异常抖动",
+        "method": "查看振动曲线并检查连杆/偏心",
+        "tool": "振动监测、目视",
+        "judgment": "振动参数在工艺区间",
+        "abnormalAction": "振动异常立即停浇检查，禁止带病运行",
+        "frequency": "D",
+        "safetyTip": "检查时禁止将手伸入振动台运动范围"
+      },
+      {
+        "code": "CHK-CCM-D-003",
+        "name": "二冷喷嘴与水量",
+        "location": "二冷区",
+        "criterion": "喷嘴无堵塞、雾化良好，水量偏差 ≤±5%",
+        "method": "检查喷嘴雾化与流量显示",
+        "tool": "目视、流量计",
+        "judgment": "水量与雾化正常",
+        "abnormalAction": "清理堵塞喷嘴，按工艺卡复核水量",
+        "frequency": "D",
+        "safetyTip": "二冷区高温高湿，必须停机并办理高温作业许可"
+      },
+      {
+        "code": "CHK-CCM-D-004",
+        "name": "中间包与塞棒",
+        "location": "中间包",
+        "criterion": "中间包液位 ≥300 mm，塞棒行程平稳无卡滞",
+        "method": "查看液位与塞棒曲线，停流检查塞棒",
+        "tool": "液位计、目视",
+        "judgment": "液位与塞棒动作正常",
+        "abnormalAction": "液位低或塞棒卡滞时降拉速、换包或停浇",
+        "frequency": "D",
+        "safetyTip": "中间包区域禁止站人，防止钢水喷溅"
+      },
+      {
+        "code": "CHK-CCM-D-005",
+        "name": "拉矫机与引锭",
+        "location": "拉矫机",
+        "criterion": "拉矫辊转动平稳，无异常振动与漏油",
+        "method": "听音、目视并检查液压",
+        "tool": "目视、耳听",
+        "judgment": "拉矫平稳无漏油",
+        "abnormalAction": "异常时降速并通知机长，必要时停浇",
+        "frequency": "D",
+        "safetyTip": "处理拉矫机必须停机挂牌，防止辊子转动夹伤"
+      },
+      {
+        "code": "CHK-CCM-D-006",
+        "name": "冷却水系统",
+        "location": "连铸平台",
+        "criterion": "结晶器/二冷/设备冷却水流量与温度正常，无泄漏",
+        "method": "查看流量计与温度表",
+        "tool": "流量计、温度表",
+        "judgment": "流量与温度在工艺范围",
+        "abnormalAction": "流量低或泄漏立即处理，必要时停浇",
+        "frequency": "D",
+        "safetyTip": "冷却水与钢水接触可能汽化爆炸，禁止向钢水区域漏水"
+      },
+      {
+        "code": "CHK-CCM-D-007",
+        "name": "平台防护与漏钢报警",
+        "location": "连铸平台",
+        "criterion": "漏钢报警装置正常，平台无积水，安全通道畅通",
+        "method": "试验报警并目视平台",
+        "tool": "报警测试、目视",
+        "judgment": "报警有效、平台干燥",
+        "abnormalAction": "报警失效立即停浇；积水立即清理",
+        "frequency": "D",
+        "safetyTip": "任何漏钢迹象立即撤离，禁止靠近观察"
+      },
+      {
+        "code": "CHK-CCM-D-008",
+        "name": "铸坯表面质量",
+        "location": "出坯区",
+        "criterion": "铸坯表面无严重纵裂、凹陷与振痕紊乱",
+        "method": "目视检查铸坯表面",
+        "tool": "目视、手电",
+        "judgment": "表面缺陷在判废标准内",
+        "abnormalAction": "缺陷超标时标记并追溯，调整保护渣/二冷",
+        "frequency": "D",
+        "safetyTip": "出坯区高温，保持安全距离，禁止触摸铸坯"
+      }
+    ]
+  },
+  "FUR": {
+    "D": [
+      {
+        "code": "CHK-FUR-D-001",
+        "name": "炉温与热电偶",
+        "location": "加热炉",
+        "criterion": "各段炉温在设定 ±10 ℃，热电偶显示正常",
+        "method": "查看温控画面并与便携测温比对",
+        "tool": "温控系统、便携测温仪",
+        "judgment": "炉温与显示正常",
+        "abnormalAction": "偏差大时校验热电偶并调整燃烧",
+        "frequency": "D",
+        "safetyTip": "炉顶测温须停炉或办理高温作业许可"
+      },
+      {
+        "code": "CHK-FUR-D-002",
+        "name": "烧嘴火焰",
+        "location": "加热炉",
+        "criterion": "各烧嘴火焰稳定、无熄火，空燃比正常",
+        "method": "观察火焰监测与炉内火焰",
+        "tool": "火焰监测、目视",
+        "judgment": "火焰稳定、无熄火",
+        "abnormalAction": "熄火立即切断燃气并吹扫，查明原因后点火",
+        "frequency": "D",
+        "safetyTip": "点火前必须吹扫，防止炉膛爆燃"
+      },
+      {
+        "code": "CHK-FUR-D-003",
+        "name": "炉压与烟道",
+        "location": "加热炉",
+        "criterion": "炉压 -20～+10 Pa，烟道闸板动作正常",
+        "method": "查看炉压表与闸板反馈",
+        "tool": "压力表、执行器反馈",
+        "judgment": "炉压在工艺区间",
+        "abnormalAction": "调整闸板/引风机，异常时降产量",
+        "frequency": "D",
+        "safetyTip": "炉门冒火时人员站在侧面，禁止正对炉门"
+      },
+      {
+        "code": "CHK-FUR-D-004",
+        "name": "炉门与密封",
+        "location": "加热炉",
+        "criterion": "炉门关闭到位，密封条无烧损，联锁有效",
+        "method": "开关炉门 1 次并目视密封",
+        "tool": "目视、联锁测试",
+        "judgment": "炉门密封、联锁有效",
+        "abnormalAction": "更换烧损密封，修复联锁",
+        "frequency": "D",
+        "safetyTip": "炉门开启存在火焰喷出风险，必须侧身操作"
+      },
+      {
+        "code": "CHK-FUR-D-005",
+        "name": "炉体冷却水",
+        "location": "加热炉",
+        "criterion": "水梁/炉门冷却水流量与温度正常，无泄漏",
+        "method": "查看流量与温度，目视泄漏",
+        "tool": "流量计、目视",
+        "judgment": "冷却水正常",
+        "abnormalAction": "泄漏或流量低立即处理，防止炉体变形",
+        "frequency": "D",
+        "safetyTip": "冷却水漏入炉膛可能引发爆炸，发现泄漏立即停炉"
+      },
+      {
+        "code": "CHK-FUR-D-006",
+        "name": "钢坯温度与节奏",
+        "location": "加热炉",
+        "criterion": "出炉钢坯温度与节奏符合工艺卡",
+        "method": "查看出炉温度与生产节奏",
+        "tool": "测温仪、生产记录",
+        "judgment": "温度与节奏符合",
+        "abnormalAction": "温度不足时调整炉温或降节奏",
+        "frequency": "D",
+        "safetyTip": "高温钢坯禁止靠近，防止辐射灼伤"
+      },
+      {
+        "code": "CHK-FUR-D-007",
+        "name": "煤气检测与报警",
+        "location": "加热炉",
+        "criterion": "煤气区域 CO 报警器正常，浓度 <30 ppm",
+        "method": "试验报警并查看检测仪",
+        "tool": "CO 报警器",
+        "judgment": "报警有效、浓度正常",
+        "abnormalAction": "报警立即撤离并检测，禁止动火",
+        "frequency": "D",
+        "safetyTip": "进入煤气区域必须两人以上并携带便携式 CO 检测仪"
+      },
+      {
+        "code": "CHK-FUR-D-008",
+        "name": "排烟与环保",
+        "location": "加热炉",
+        "criterion": "排烟温度与污染物排放在限值内，烟道无泄漏",
+        "method": "查看环保监测与烟道",
+        "tool": "监测系统、目视",
+        "judgment": "排放在限值内",
+        "abnormalAction": "超标时调整燃烧或停炉检修",
+        "frequency": "D",
+        "safetyTip": "烟道区域高温，禁止靠近泄漏点"
+      }
+    ]
+  },
+  "ROL": {
+    "D": [
+      {
+        "code": "CHK-ROL-D-001",
+        "name": "轧辊与轴承",
+        "location": "精轧机",
+        "criterion": "轧辊无剥落、裂纹，轴承温度 ≤70 ℃、振动 ≤4.5 mm/s",
+        "method": "停机检查轧辊并测轴承振动温度",
+        "tool": "目视、测振仪、测温仪",
+        "judgment": "轧辊完好、轴承正常",
+        "abnormalAction": "轧辊缺陷立即换辊；轴承异常停机检查",
+        "frequency": "D",
+        "safetyTip": "换辊必须停机断电挂牌，使用安全销"
+      },
+      {
+        "code": "CHK-ROL-D-002",
+        "name": "AGC 液压系统",
+        "location": "液压站",
+        "criterion": "系统压力 25 MPa，位置偏差 ≤0.2 mm，无泄漏",
+        "method": "查看压力与位置反馈，目视泄漏",
+        "tool": "压力表、位置反馈",
+        "judgment": "压力与位置正常",
+        "abnormalAction": "压力波动或偏差大时切手动检查伺服阀",
+        "frequency": "D",
+        "safetyTip": "高压油可致穿透伤，检查时不得正对管口"
+      },
+      {
+        "code": "CHK-ROL-D-003",
+        "name": "轧机振动",
+        "location": "精轧机",
+        "criterion": "机架振动 ≤4.5 mm/s，无异常振痕",
+        "method": "测轧机振动并查看板面",
+        "tool": "测振仪、目视",
+        "judgment": "振动在限值内",
+        "abnormalAction": "振动超标降速并检查轧辊/AGC",
+        "frequency": "D",
+        "safetyTip": "轧机转动部位禁止靠近，检查必须停机挂牌"
+      },
+      {
+        "code": "CHK-ROL-D-004",
+        "name": "冷却水与辊温",
+        "location": "精轧机",
+        "criterion": "轧辊冷却水流量正常、喷嘴无堵塞，辊温均匀",
+        "method": "检查冷却水与辊面温度",
+        "tool": "流量计、测温仪",
+        "judgment": "冷却正常、辊温均匀",
+        "abnormalAction": "清理喷嘴，调整冷却水量",
+        "frequency": "D",
+        "safetyTip": "高温轧辊与冷却水接触可产生蒸汽，保持距离"
+      },
+      {
+        "code": "CHK-ROL-D-005",
+        "name": "板形与张力",
+        "location": "精轧机",
+        "criterion": "板形仪平直度在目标范围，张力与速度设定正确",
+        "method": "查看板形曲线与张力设定",
+        "tool": "板形仪、控制系统",
+        "judgment": "板形与张力正常",
+        "abnormalAction": "调整弯辊/窜辊与张力，持续超差停机检查",
+        "frequency": "D",
+        "safetyTip": "调整参数时人员远离轧机入口"
+      },
+      {
+        "code": "CHK-ROL-D-006",
+        "name": "安全销与防护",
+        "location": "精轧机",
+        "criterion": "安全销锁定有效，防护门/光栅联锁正常",
+        "method": "试验安全销与联锁",
+        "tool": "功能测试",
+        "judgment": "安全装置有效",
+        "abnormalAction": "失效立即停机，禁止短接",
+        "frequency": "D",
+        "safetyTip": "严禁短接或拆除安全联锁"
+      },
+      {
+        "code": "CHK-ROL-D-007",
+        "name": "传动接轴",
+        "location": "精轧机",
+        "criterion": "接轴平衡良好、无异常振动与漏油",
+        "method": "听音、目视并测振",
+        "tool": "耳听、测振仪",
+        "judgment": "接轴运行平稳",
+        "abnormalAction": "异常时停机检查接轴与平衡",
+        "frequency": "D",
+        "safetyTip": "接轴旋转区域禁止站人"
+      },
+      {
+        "code": "CHK-ROL-D-008",
+        "name": "润滑系统",
+        "location": "精轧机",
+        "criterion": "稀油站压力/流量正常，油温 ≤55 ℃，无泄漏",
+        "method": "查看润滑站参数与泄漏",
+        "tool": "压力表、目视",
+        "judgment": "润滑参数正常",
+        "abnormalAction": "压力低或泄漏立即处理",
+        "frequency": "D",
+        "safetyTip": "补油时防止高温油烫伤"
+      }
+    ]
+  },
+  "FAN": {
+    "D": [
+      {
+        "code": "CHK-FAN-D-001",
+        "name": "轴承温度与振动",
+        "location": "除尘风机",
+        "criterion": "轴承温度 ≤75 ℃，振动 ≤4.5 mm/s",
+        "method": "测温并测振",
+        "tool": "测温仪、测振仪",
+        "judgment": "温度与振动正常",
+        "abnormalAction": "超限降负荷并停机检查",
+        "frequency": "D",
+        "safetyTip": "风机惰走时间长，停机后等待叶轮停止"
+      },
+      {
+        "code": "CHK-FAN-D-002",
+        "name": "叶轮积灰与磨损",
+        "location": "除尘风机",
+        "criterion": "叶轮无明显积灰、磨损 ≤原厚度 1/3",
+        "method": "停机检查叶轮",
+        "tool": "目视、测厚仪",
+        "judgment": "叶轮清洁、磨损轻微",
+        "abnormalAction": "清灰或更换叶轮，做动平衡",
+        "frequency": "D",
+        "safetyTip": "进入风机内部必须断电挂牌并等待停止"
+      },
+      {
+        "code": "CHK-FAN-D-003",
+        "name": "滤袋压差",
+        "location": "除尘器",
+        "criterion": "压差 800–1500 Pa，滤袋无破损",
+        "method": "查看压差表并检查滤袋",
+        "tool": "压差表、目视",
+        "judgment": "压差正常、滤袋完好",
+        "abnormalAction": "清灰或更换滤袋，检查喷吹",
+        "frequency": "D",
+        "safetyTip": "更换滤袋属有限空间作业，需通风检测监护"
+      },
+      {
+        "code": "CHK-FAN-D-004",
+        "name": "管道与阀门",
+        "location": "除尘系统",
+        "criterion": "管道无积灰堵塞，阀门开度符合设计",
+        "method": "检查管道与阀门",
+        "tool": "目视、开度反馈",
+        "judgment": "管道畅通、阀门正常",
+        "abnormalAction": "清理积灰、调整阀门、修补泄漏",
+        "frequency": "D",
+        "safetyTip": "登高检查管道必须系安全带"
+      },
+      {
+        "code": "CHK-FAN-D-005",
+        "name": "电机电流与温度",
+        "location": "除尘风机",
+        "criterion": "电机电流接近额定，温度 ≤80 ℃",
+        "method": "查看电流与测温",
+        "tool": "电流表、测温仪",
+        "judgment": "电流与温度正常",
+        "abnormalAction": "异常时检查负载与散热",
+        "frequency": "D",
+        "safetyTip": "电气检查必须持证并断电验电"
+      },
+      {
+        "code": "CHK-FAN-D-006",
+        "name": "皮带与联轴器",
+        "location": "除尘风机",
+        "criterion": "皮带张紧适中、无裂纹，联轴器对中良好",
+        "method": "目视并检查张紧",
+        "tool": "目视、塞尺",
+        "judgment": "皮带与联轴器正常",
+        "abnormalAction": "更换皮带、调整对中",
+        "frequency": "D",
+        "safetyTip": "调整皮带必须停机挂牌"
+      },
+      {
+        "code": "CHK-FAN-D-007",
+        "name": "润滑与冷却",
+        "location": "除尘风机",
+        "criterion": "润滑脂牌号正确、加注适中，冷却风道畅通",
+        "method": "检查润滑与风道",
+        "tool": "目视、记录",
+        "judgment": "润滑与冷却正常",
+        "abnormalAction": "补脂或更换轴承，清理风道",
+        "frequency": "D",
+        "safetyTip": "补脂时防止高温油脂烫伤"
+      },
+      {
+        "code": "CHK-FAN-D-008",
+        "name": "粉尘防爆与消防",
+        "location": "除尘间",
+        "criterion": "除尘间无明火、粉尘沉积少，消防器材完好",
+        "method": "目视检查",
+        "tool": "目视、消防检查",
+        "judgment": "无隐患、器材完好",
+        "abnormalAction": "清理积灰，整改动火作业",
+        "frequency": "D",
+        "safetyTip": "除尘间禁止明火，粉尘爆炸风险区域严禁违规动火"
+      }
+    ]
+  },
+  "HYD": {
+    "D": [
+      {
+        "code": "CHK-HYD-D-001",
+        "name": "系统压力",
+        "location": "液压站",
+        "criterion": "系统压力 25 MPa，无异常波动",
+        "method": "查看压力表与压力曲线",
+        "tool": "压力表、控制系统",
+        "judgment": "压力稳定在设定值",
+        "abnormalAction": "调整泵/溢流阀，异常时切手动",
+        "frequency": "D",
+        "safetyTip": "高压油可致穿透伤，不得正对管口"
+      },
+      {
+        "code": "CHK-HYD-D-002",
+        "name": "油温与油位",
+        "location": "液压站",
+        "criterion": "油温 35–55 ℃，油位在油标 1/2–2/3",
+        "method": "查看温度与油位",
+        "tool": "温度表、油标",
+        "judgment": "油温/油位正常",
+        "abnormalAction": "开冷却器或补油，异常时停机",
+        "frequency": "D",
+        "safetyTip": "补油时防止高温油烫伤"
+      },
+      {
+        "code": "CHK-HYD-D-003",
+        "name": "油液清洁度与滤芯",
+        "location": "液压站",
+        "criterion": "滤芯压差正常，油液清洁度达标",
+        "method": "查看压差并取样检测",
+        "tool": "压差表、检测报告",
+        "judgment": "清洁度与压差正常",
+        "abnormalAction": "更换滤芯与油液，清洗系统",
+        "frequency": "D",
+        "safetyTip": "废油按危废回收"
+      },
+      {
+        "code": "CHK-HYD-D-004",
+        "name": "蓄能器",
+        "location": "液压站",
+        "criterion": "氮气压力 16 MPa，皮囊无破损、无泄漏",
+        "method": "查看压力并检查蓄能器",
+        "tool": "压力表、目视",
+        "judgment": "蓄能器压力正常",
+        "abnormalAction": "补充氮气或更换皮囊，使用专用工具",
+        "frequency": "D",
+        "safetyTip": "蓄能器充氮必须使用专用工具，禁止氧气充装"
+      },
+      {
+        "code": "CHK-HYD-D-005",
+        "name": "伺服阀/电磁阀",
+        "location": "液压站",
+        "criterion": "阀件无卡滞、无泄漏，响应正常",
+        "method": "查看阀状态与响应",
+        "tool": "控制系统、目视",
+        "judgment": "阀件动作正常",
+        "abnormalAction": "清洗或更换阀件，检查油液",
+        "frequency": "D",
+        "safetyTip": "拆阀前必须泄压至 0"
+      },
+      {
+        "code": "CHK-HYD-D-006",
+        "name": "油缸与管路泄漏",
+        "location": "轧机液压",
+        "criterion": "油缸无内泄、管路接头无渗漏",
+        "method": "目视并做保压试验",
+        "tool": "目视、保压试验",
+        "judgment": "无泄漏、保压合格",
+        "abnormalAction": "更换密封、复紧接头",
+        "frequency": "D",
+        "safetyTip": "拆管前泄压至 0 并支撑负载"
+      },
+      {
+        "code": "CHK-HYD-D-007",
+        "name": "冷却器",
+        "location": "液压站",
+        "criterion": "冷却器进出口温差正常，冷却水流量充足",
+        "method": "查看温差与流量",
+        "tool": "温度表、流量计",
+        "judgment": "冷却正常",
+        "abnormalAction": "清洗冷却器或增大冷却水",
+        "frequency": "D",
+        "safetyTip": "清洗时防止高温油喷溅"
+      },
+      {
+        "code": "CHK-HYD-D-008",
+        "name": "管路与接头",
+        "location": "液压站",
+        "criterion": "高压软管无老化鼓包，接头无松动",
+        "method": "目视检查",
+        "tool": "目视、力矩扳手",
+        "judgment": "管路完好、接头紧固",
+        "abnormalAction": "更换软管、按规定力矩复紧",
+        "frequency": "D",
+        "safetyTip": "更换高压管必须泄压并佩戴护目镜"
+      }
+    ]
+  },
+  "EAF": {
+    "D": [
+      {
+        "code": "CHK-EAF-D-001",
+        "name": "电极与夹持器",
+        "location": "电弧炉",
+        "criterion": "电极无裂纹、接头完好，夹持器夹紧无打滑",
+        "method": "目视并检查夹持压力",
+        "tool": "目视、压力表",
+        "judgment": "电极与夹持正常",
+        "abnormalAction": "更换电极、调整夹持压力",
+        "frequency": "D",
+        "safetyTip": "更换电极必须断电挂接地棒"
+      },
+      {
+        "code": "CHK-EAF-D-002",
+        "name": "炉衬与炉壳",
+        "location": "电弧炉",
+        "criterion": "炉衬厚度不低于安全值，炉壳温度 ≤350 ℃",
+        "method": "测炉壳温度并目视炉衬",
+        "tool": "测温仪、目视",
+        "judgment": "炉衬与炉壳正常",
+        "abnormalAction": "热点扩大立即停炉修补",
+        "frequency": "D",
+        "safetyTip": "炉壳发红立即停炉撤离，禁止靠近"
+      },
+      {
+        "code": "CHK-EAF-D-003",
+        "name": "炉体冷却水",
+        "location": "电弧炉",
+        "criterion": "冷却水流量与温度正常，无泄漏",
+        "method": "查看流量温度并目视",
+        "tool": "流量计、温度表",
+        "judgment": "冷却正常、无泄漏",
+        "abnormalAction": "流量低或泄漏立即停炉",
+        "frequency": "D",
+        "safetyTip": "冷却水漏入炉内可引发爆炸"
+      },
+      {
+        "code": "CHK-EAF-D-004",
+        "name": "短网与变压器",
+        "location": "电弧炉",
+        "criterion": "短网接头温度 ≤90 ℃，变压器温度正常",
+        "method": "红外测温并查看变压器参数",
+        "tool": "红外测温仪、温控",
+        "judgment": "温度正常",
+        "abnormalAction": "复紧接头、检查冷却",
+        "frequency": "D",
+        "safetyTip": "高压设备检查必须持证并停电验电放电"
+      },
+      {
+        "code": "CHK-EAF-D-005",
+        "name": "炉盖与除尘",
+        "location": "电弧炉",
+        "criterion": "炉盖密封良好，除尘系统运行正常",
+        "method": "目视并查看除尘参数",
+        "tool": "目视、监控",
+        "judgment": "炉盖与除尘正常",
+        "abnormalAction": "修复密封、调整除尘",
+        "frequency": "D",
+        "safetyTip": "炉盖区域高温，禁止靠近"
+      },
+      {
+        "code": "CHK-EAF-D-006",
+        "name": "氧枪与碳枪",
+        "location": "电弧炉",
+        "criterion": "枪体无泄漏、流量压力正常",
+        "method": "查看流量压力并检查泄漏",
+        "tool": "流量计、目视",
+        "judgment": "枪体与流量正常",
+        "abnormalAction": "处理泄漏、调整流量",
+        "frequency": "D",
+        "safetyTip": "氧气系统禁油脂，操作必须防回火"
+      },
+      {
+        "code": "CHK-EAF-D-007",
+        "name": "出钢口与钢包",
+        "location": "电弧炉",
+        "criterion": "出钢口无堵塞、钢包干燥无积水",
+        "method": "目视并检查钢包",
+        "tool": "目视",
+        "judgment": "出钢口通畅、钢包干燥",
+        "abnormalAction": "清理出钢口、更换钢包",
+        "frequency": "D",
+        "safetyTip": "钢包积水遇钢水会爆炸，必须干燥"
+      },
+      {
+        "code": "CHK-EAF-D-008",
+        "name": "煤气回收与检测",
+        "location": "电弧炉",
+        "criterion": "煤气回收系统检测正常，CO 报警有效",
+        "method": "试验报警并查看检测",
+        "tool": "CO 报警器",
+        "judgment": "检测与报警正常",
+        "abnormalAction": "停炉检查煤气系统",
+        "frequency": "D",
+        "safetyTip": "煤气区域禁止动火，进入必须检测监护"
+      }
+    ]
+  }
+}

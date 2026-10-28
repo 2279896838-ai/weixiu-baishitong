@@ -1,0 +1,46 @@
+assets:
+  - id: WXBST-SYS-001
+    version: 1.0.0
+    path: sys/WXBST-SYS-001.md
+  - id: WXBST-RTR-001
+    version: 1.0.0
+    path: router/WXBST-RTR-001.md
+  - id: WXBST-QA-001
+    version: 1.1.0
+    path: scenario/WXBST-QA-001.md
+  - id: WXBST-TRG-001
+    version: 1.0.0
+    path: scenario/WXBST-TRG-001.md
+  - id: WXBST-CHK-001
+    version: 1.0.0
+    path: scenario/WXBST-CHK-001.md
+  - id: WXBST-CHK-002
+    version: 1.0.0
+    path: scenario/WXBST-CHK-002.md
+  - id: WXBST-DASH-001
+    version: 1.0.0
+    path: scenario/WXBST-DASH-001.md
+  - id: WXBST-WO-001
+    version: 1.0.0
+    path: scenario/WXBST-WO-001.md
+  - id: WXBST-EXT-001
+    version: 1.0.0
+    path: scenario/WXBST-EXT-001.md
+  - id: WXBST-INT-001
+    version: 1.0.0
+    path: scenario/WXBST-INT-001.md
+  - id: WXBST-RAG-QRY-001
+    version: 1.0.0
+    path: rag/WXBST-RAG-QRY-001.md
+  - id: WXBST-RAG-RNK-001
+    version: 1.0.0
+    path: rag/WXBST-RAG-RNK-001.md
+  - id: WXBST-FIX-001
+    version: 1.0.0
+    path: fix/WXBST-FIX-001.md
+  - id: WXBST-SEC-001
+    version: 1.0.0
+    path: safety/WXBST-SEC-001.md
+  - id: WXBST-EVL-001
+    version: 1.0.1
+    path: eval/WXBST-EVL-001.md

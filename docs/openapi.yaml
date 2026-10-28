@@ -1,0 +1,325 @@
+openapi: 3.0.3
+info:
+  title: 维修百事通 API
+  version: 1.0.0
+  description: |
+    设备故障诊断与点检引导智能体的本地 HTTP API（Python 标准库实现，无第三方依赖）。
+    默认地址 http://127.0.0.1:8787，智能体页面 /agent。
+servers:
+  - url: http://127.0.0.1:8787
+    description: 本地服务
+tags:
+  - name: system
+  - name: equipment
+  - name: chat
+  - name: checklist
+  - name: dashboard
+  - name: workorder
+  - name: prompts
+paths:
+  /api/health:
+    get:
+      tags: [system]
+      summary: 健康检查
+      responses:
+        "200":
+          description: 服务状态、版本、运行指标与提示词状态
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: ok }
+                  mode: { type: string, enum: [offline, online] }
+                  version: { type: string, example: 1.0.0 }
+                  uptimeSec: { type: number }
+                  requests: { type: integer }
+                  errors: { type: integer }
+                  stats: { type: object, additionalProperties: true }
+                  prompts:
+                    type: object
+                    properties:
+                      count: { type: integer }
+                      expected: { type: integer }
+                      errors: { type: integer }
+  /api/equipment:
+    get:
+      tags: [equipment]
+      summary: 设备台账
+      parameters:
+        - in: query
+          name: query
+          schema: { type: string }
+          description: 名称/编码/类别关键字
+      responses:
+        "200":
+          description: 设备数组
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Equipment" }
+  /api/chat:
+    post:
+      tags: [chat]
+      summary: 故障问答 / 意图路由入口
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ChatRequest" }
+      responses:
+        "200":
+          description: 回答载荷（问答/点检/引导/安全拦截）
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "413": { $ref: "#/components/responses/PayloadTooLarge" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+  /api/troubleshoot/answer:
+    post:
+      tags: [chat]
+      summary: 排查引导作答
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [sessionId, reply]
+              properties:
+                sessionId: { type: string }
+                reply: { type: string, maxLength: 2000 }
+      responses:
+        "200":
+          description: 下一节点或叶节点结论
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+        "400": { $ref: "#/components/responses/BadRequest" }
+  /api/checklists/generate:
+    post:
+      tags: [checklist]
+      summary: 生成点检清单
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [equipmentCode]
+              properties:
+                equipmentCode: { type: string, example: EQ-MT01-0001 }
+                frequency: { type: string, enum: [D, W, M], default: D }
+                operator: { type: string }
+      responses:
+        "200":
+          description: 点检清单
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /api/checklists/submit:
+    post:
+      tags: [checklist]
+      summary: 提交点检填报
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [checklist, items]
+              properties:
+                checklist: { type: object, additionalProperties: true }
+                items:
+                  type: array
+                  items:
+                    type: object
+                    required: [code, result]
+                    properties:
+                      code: { type: string }
+                      result: { type: string, enum: [OK, ABNORMAL, NA] }
+                      note: { type: string }
+                      severity: { type: string, enum: [LOW, MEDIUM, HIGH] }
+                operator: { type: string }
+                note: { type: string }
+      responses:
+        "200":
+          description: 提交结果与异常列表
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+        "400": { $ref: "#/components/responses/BadRequest" }
+  /api/dashboard:
+    get:
+      tags: [dashboard]
+      summary: 点检异常看板
+      parameters:
+        - in: query
+          name: days
+          schema: { type: integer, default: 30 }
+      responses:
+        "200":
+          description: 汇总、类别分布、Top 设备、最近异常
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+  /api/workorders:
+    get:
+      tags: [workorder]
+      summary: 工单列表
+      parameters:
+        - in: query
+          name: status
+          schema: { type: string }
+      responses:
+        "200":
+          description: 工单数组
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/WorkOrder" }
+    post:
+      tags: [workorder]
+      summary: 由异常创建工单
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [anomalyId]
+              properties:
+                anomalyId: { type: string, example: AN-20261027-001 }
+                note: { type: string }
+                operator: { type: string }
+      responses:
+        "200":
+          description: 工单
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/WorkOrder" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /api/workorders/{workorderId}:
+    patch:
+      tags: [workorder]
+      summary: 工单状态流转/结案
+      parameters:
+        - in: path
+          name: workorderId
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [DRAFT, PENDING_CONFIRM, ASSIGNED, ACCEPTED, IN_PROGRESS, PENDING_ACCEPTANCE, CLOSED]
+                operator: { type: string }
+                repairReport: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: 更新后的工单
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/WorkOrder" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /api/prompts:
+    get:
+      tags: [prompts]
+      summary: 提示词资产清单
+      responses:
+        "200":
+          description: 15 个资产的元数据（版本、哈希、占位符）
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+  /api/prompts/{assetId}:
+    get:
+      tags: [prompts]
+      summary: 单个提示词资产正文
+      parameters:
+        - in: path
+          name: assetId
+          required: true
+          schema: { type: string, example: WXBST-QA-001 }
+      responses:
+        "200":
+          description: 资产正文与元数据
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+        "404": { $ref: "#/components/responses/NotFound" }
+components:
+  schemas:
+    Equipment:
+      type: object
+      properties:
+        equipmentCode: { type: string }
+        name: { type: string }
+        category: { type: string }
+        location: { type: string }
+        brand: { type: string }
+        specs: { type: object, additionalProperties: true }
+        commonFaults: { type: array, items: { type: string } }
+        safetyRules: { type: array, items: { type: string } }
+        categoryName: { type: string }
+    ChatRequest:
+      type: object
+      required: [message]
+      properties:
+        sessionId: { type: string }
+        message: { type: string, maxLength: 2000 }
+        role: { type: string, enum: [student, teacher, admin], default: student }
+        equipmentCode: { type: string }
+    WorkOrder:
+      type: object
+      properties:
+        workorderId: { type: string }
+        workorderNo: { type: string }
+        status: { type: string }
+        severity: { type: string }
+        equipmentCode: { type: string }
+        equipmentName: { type: string }
+        nextStatus: { type: string }
+        repairReport: { type: object, nullable: true, additionalProperties: true }
+        knowledgeCandidateId: { type: string }
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string }
+            message: { type: string }
+  responses:
+    BadRequest:
+      description: 请求参数不合法
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    PayloadTooLarge:
+      description: 请求体超过 256 KB
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    RateLimited:
+      description: 触发限流（600 请求/分钟/IP）
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NotFound:
+      description: 资源不存在
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }

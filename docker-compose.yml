@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  weixiu-baishitong:
+    build: .
+    image: weixiu-baishitong:1.0.0
+    container_name: weixiu-baishitong
+    ports:
+      - "8787:8787"
+    environment:
+      PORT: "8787"
+      LLM_API_BASE: "${LLM_API_BASE:-}"
+      LLM_API_KEY: "${LLM_API_KEY:-}"
+      LLM_MODEL: "${LLM_MODEL:-}"
+    volumes:
+      - ./demo/runtime:/app/demo/runtime
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8787/api/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

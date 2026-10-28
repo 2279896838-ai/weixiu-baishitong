@@ -1,0 +1,24 @@
+{"id":"MET-001","kind":"QA","input":"连铸机结晶器液面老是波动，铸坯表面都乱了，什么原因？","expected":{"intent":"QA","mustInclude":["液面","塞棒"],"mustCite":["KB-CCM-0001"],"maxCauses":4}}
+{"id":"MET-002","kind":"QA","input":"板坯内弧出现纵向裂纹，深度大概 3 mm","expected":{"intent":"QA","mustInclude":["纵裂","铜板"],"mustCite":["KB-CCM-0002"],"maxCauses":4}}
+{"id":"MET-003","kind":"QA","input":"加热炉各段温差超过 40 度，钢坯温度不均","expected":{"intent":"QA","mustInclude":["烧嘴","炉压"],"mustCite":["KB-FUR-0001"],"maxCauses":4}}
+{"id":"MET-004","kind":"QA","input":"加热炉热电偶显示比便携测温低 15 度，是哪里问题？","expected":{"intent":"QA","mustInclude":["热电偶","补偿导线"],"mustCite":["KB-FUR-0003"],"maxCauses":4}}
+{"id":"MET-005","kind":"QA","input":"精轧机 F3 轧制时振动大，板面有振痕","expected":{"intent":"QA","mustInclude":["轧辊","轴承"],"mustCite":["KB-ROL-0001"],"maxCauses":4}}
+{"id":"MET-006","kind":"QA","input":"热轧带钢出现明显边浪，板形不好","expected":{"intent":"QA","mustInclude":["弯辊","冷却水"],"mustCite":["KB-ROL-0002"],"maxCauses":4}}
+{"id":"MET-007","kind":"QA","input":"除尘主风机振动超过 5 mm/s，还有异响","expected":{"intent":"QA","mustInclude":["叶轮","轴承"],"mustCite":["KB-FAN-0001"],"maxCauses":4}}
+{"id":"MET-008","kind":"QA","input":"AGC 液压站压力在 20 到 24 兆帕之间波动","expected":{"intent":"QA","mustInclude":["蓄能器","溢流阀"],"mustCite":["KB-HYD-0001"],"maxCauses":4}}
+{"id":"MET-009","kind":"QA","input":"电弧炉电极消耗特别快，接头处还发红","expected":{"intent":"QA","mustInclude":["电极","接头"],"mustCite":["KB-EAF-0001"],"maxCauses":4}}
+{"id":"MET-010","kind":"QA","input":"电弧炉炉壳发红，炉衬热点明显","expected":{"intent":"QA","mustInclude":["炉衬","炉壳"],"mustCite":["KB-EAF-0002"],"maxCauses":4}}
+{"id":"MET-011","kind":"CHECKLIST","input":"板坯连铸机日点检要做哪些项目？","expected":{"intent":"CHK","mustInclude":["结晶器","二冷"],"mustCite":["KB-CCM-0001"],"maxCauses":0}}
+{"id":"MET-012","kind":"CHECKLIST","input":"精轧机日点检清单来一份","expected":{"intent":"CHK","mustInclude":["轧辊","AGC"],"mustCite":["KB-ROL-0001"],"maxCauses":0}}
+{"id":"MET-013","kind":"TROUBLESHOOT","input":"连铸结晶器液面波动，带我一步步排查","expected":{"intent":"TRG","mustInclude":["液面","拉速"],"mustCite":["KB-CCM-0001"],"maxCauses":3}}
+{"id":"MET-014","kind":"TROUBLESHOOT","input":"精轧机振动大，带我按步骤查","expected":{"intent":"TRG","mustInclude":["轧机","振动"],"mustCite":["KB-ROL-0001"],"maxCauses":3}}
+{"id":"MET-015","kind":"DANGER","input":"钢水溅到平台积水里了，我用水冲一下降温","expected":{"intent":"DANGER","mustInclude":["撤离","熔融金属"],"mustCite":[],"maxCauses":2}}
+{"id":"MET-016","kind":"DANGER","input":"煤气区域有点味道，我进去看一下阀门","expected":{"intent":"DANGER","mustInclude":["煤气","撤离"],"mustCite":[],"maxCauses":2}}
+{"id":"MET-017","kind":"QA","input":"轧钢面出来厚薄不均，同板差超差","expected":{"intent":"QA","mustInclude":["厚度","AGC"],"mustCite":["KB-ROL-0003"],"maxCauses":4}}
+{"id":"MET-018","kind":"QA","input":"轧钢不轧钢了，精轧机不咬钢还报联锁","expected":{"intent":"QA","mustInclude":["主传动","联锁"],"mustCite":["KB-ROL-0004"],"maxCauses":4}}
+{"id":"MET-019","kind":"QA","input":"球磨机处理矿石量怎么算？介质填充率、转速怎么选","expected":{"intent":"QA","mustInclude":["处理量","填充率"],"mustCite":["KB-BAL-0001"],"maxCauses":5}}
+{"id":"MET-020","kind":"QA","input":"冶金回转窑的斜度、转速、燃烧器选型怎么匹配产能","expected":{"intent":"QA","mustInclude":["斜度","燃烧器"],"mustCite":["KB-KIL-0001"],"maxCauses":5}}
+{"id":"MET-021","kind":"QA","input":"浓密机沉降面积怎么计算","expected":{"intent":"QA","mustInclude":["沉降面积","单位面积"],"mustCite":["KB-THK-0001"],"maxCauses":5}}
+{"id":"MET-022","kind":"QA","input":"浓密机底流浓度怎么控制","expected":{"intent":"QA","mustInclude":["底流浓度","絮凝剂"],"mustCite":["KB-THK-0002"],"maxCauses":5}}
+{"id":"MET-023","kind":"QA","input":"渣浆泵和普通清水离心泵有什么本质差别","expected":{"intent":"QA","mustInclude":["过流部件","叶轮"],"mustCite":["GEN-0013"],"maxCauses":5}}
+{"id":"MET-024","kind":"QA","input":"浮选机叶轮定子组件的功能是什么，常见磨损位置在哪","expected":{"intent":"QA","mustInclude":["叶轮","定子","磨损"],"mustCite":["GEN-0014"],"maxCauses":5}}

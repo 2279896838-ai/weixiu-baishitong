@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+demo/runtime/
+templates/design-render/
+templates/offline-profile*/
+templates/agent-profile*/
+.env
+.DS_Store
+Thumbs.db
+
+.env.local
+
+.env.prod
+backups/
+*.db
+*.db-wal
+*.db-shm
