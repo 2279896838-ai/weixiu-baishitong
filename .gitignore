@@ -14,4 +14,8 @@ Thumbs.db
 backups/
 *.db
 *.db-wal
-*.db-shm
+*.db-shmtemplates/*.log
+templates/*.err
+templates/kb-*.html
+templates/push_*.py
+templates/agent-shot.png
