@@ -1,21 +1,21 @@
 # 维修百事通 · 工业级就绪报告
 
-- 生成时间：2026-10-27T16:05:05+0800
+- 生成时间：2026-10-28T15:56:59+0800
 - 版本：1.1.0
 - 门禁：53/53 通过
-- 说明：R16 产品化 R1 收尾：版本/日志/审计保留
+- 说明：R17 渣浆泵密封概念知识（离线稳定模式）
 
 ## 1 门禁结果
 
 | 门禁项 | 结论 | 详情 |
 | --- | --- | --- |
-| server: startup | 通过 | 28697 |
+| server: startup | 通过 | 27946 |
 | health: 200 | 通过 | 200 |
 | health: version | 通过 | 1.1.0 |
 | health: uptime | 通过 | 0.5 |
 | health: requests | 通过 | 1 |
 | health: limits | 通过 | {'maxBodyBytes': 262144, 'maxMessageChars': 2000, 'ratePerMinute': 600} |
-| health: data stats | 通过 | {'equipment': 16, 'knowledge': 63, 'checklistCategories': 13, 'checklistTemplates': 16, 'checklistItems': 119, 'trees': 5, 'vector': {'docs': 63, 'dim': 512, 'backend': 'hash', 'model': '', 'error': ''}} |
+| health: data stats | 通过 | {'equipment': 16, 'knowledge': 64, 'checklistCategories': 13, 'checklistTemplates': 16, 'checklistItems': 119, 'trees': 5, 'vector': {'docs': 64, 'dim': 512, 'backend': 'hash', 'model': '', 'error': ''}} |
 | health: prompts | 通过 | {'count': 15, 'expected': 15, 'errors': 0} |
 | api: equipment | 通过 | 16 |
 | api: chat QA | 通过 | ['QA', 4] |
@@ -38,41 +38,41 @@
 | security: agent page | 通过 | 200 |
 | security: traversal blocked | 通过 | 403 |
 | performance: sequential errors | 通过 | 0 |
-| performance: p95 < 800ms | 通过 | 24.0 |
-| performance: max < 3000ms | 通过 | 27.7 |
+| performance: p95 < 800ms | 通过 | 26.8 |
+| performance: max < 3000ms | 通过 | 28.2 |
 | performance: concurrency | 通过 | [200, 200, 200, 200, 200, 200, 200, 200, 200, 200] |
 | audit: rows | 通过 | 110 |
 | audit: fields | 通过 | [] |
 | audit: tool header | 通过 | 1 |
 | audit: health requests | 通过 | [110, 110] |
-| data: counts | 通过 | [16, 63, 5, 78] |
+| data: counts | 通过 | [16, 64, 5, 78] |
 | data: equipment fields | 通过 | [] |
 | data: equipment codes unique | 通过 | 16 |
 | data: knowledge fields | 通过 | [] |
-| data: knowledge ids unique | 通过 | 63 |
+| data: knowledge ids unique | 通过 | 64 |
 | data: knowledge richness | 通过 | [] |
 | data: probabilities | 通过 | [] |
 | data: checklists | 通过 | [13, 119] |
 | data: trees | 通过 | [] |
 | data: eval cases | 通过 | [] |
 | prompts: assets | 通过 | [15, []] |
-| artifacts: offline demo | 通过 | 1014391 |
-| artifacts: agent demo | 通过 | 358528 |
+| artifacts: offline demo | 通过 | 1040549 |
+| artifacts: agent demo | 通过 | 363452 |
 | artifacts: design pdf | 通过 | 923333 |
-| artifacts: offline shim + agent embed | 通过 | 905417 |
-| artifacts: agent shim | 通过 | 255677 |
+| artifacts: offline shim + agent embed | 通过 | 929245 |
+| artifacts: agent shim | 通过 | 259027 |
 | docs: release files | 通过 | [] |
 
 ## 2 性能指标
 
 | 指标 | 数值 |
 | --- | --- |
-| p50_ms | 15.1 |
-| p95_ms | 24.0 |
-| max_ms | 27.7 |
+| p50_ms | 3.3 |
+| p95_ms | 26.8 |
+| max_ms | 28.2 |
 | sequential_errors | 0 |
 | concurrent_requests | 30 |
-| concurrent_seconds | 0.55 |
+| concurrent_seconds | 0.57 |
 
 ## 3 迭代记录
 
@@ -93,3 +93,4 @@
 | 14 | R14 接入自定义模型 Z、渐进打字与概念问答 | 53/53 |
 | 15 | R15 产品化基础：SQLite/鉴权/指标/部署 | 53/53 |
 | 16 | R16 产品化 R1 收尾：版本/日志/审计保留 | 53/53 |
+| 17 | R17 渣浆泵密封概念知识（离线稳定模式） | 53/53 |

@@ -1717,7 +1717,7 @@ class Engine:
             re.search(r"怎么算|如何计算|计算公式|怎么选|如何选|选型|匹配|填充率|转速率|临界转速|斜度|燃烧器|产能|处理量|参数|沉降面积|底流浓度|底流|浓密|浓缩|絮凝|澄清|放大|设计|方案", text)
         ) and (category in ("BAL", "KIL", "THK") or re.search(r"浮选|磁选|旋流器|筛|皮带|输送|泵|除尘|换热|冷却塔|起重|天车|变频|料仓|阀门|仪表|浓密|球磨|回转窑|冶金|选矿|冶炼|浓缩|沉降", text))
         concept_mode = bool(
-            re.search(r"是什么|什么是|有什么|差别|区别|功能|作用|原理|结构|组成|为什么|如何工作|磨损位置|常见磨损|对比", text)
+            re.search(r"是什么|什么是|有什么|差别|区别|差异|功能|作用|原理|结构|组成|为什么|如何工作|磨损位置|常见磨损|对比", text)
         ) and (category in ("BAL", "KIL", "THK") or re.search(r"浮选|磁选|旋流器|筛|皮带|输送|泵|除尘|换热|冷却塔|起重|天车|变频|料仓|阀门|仪表|浓密|球磨|回转窑|冶金|选矿|冶炼|浓缩|沉降|渣浆|清水", text))
         if (process_mode or concept_mode) and not symptom:
             symptom = "工艺参数计算与选型" if process_mode else "设备原理与结构"
