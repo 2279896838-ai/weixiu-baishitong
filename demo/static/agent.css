@@ -255,3 +255,15 @@ body.embedded .chat-panel { max-height: calc(100vh - 200px); }
 }
 .conclusion.typing { cursor: pointer; }
 @keyframes wxbst-blink { 50% { opacity: 0; } }
+
+/* 工艺计算器 */
+.calc-hint { font-size: 12px; color: #72839a; margin: 0 0 8px; line-height: 1.5; }
+.calc-field { display: block; font-size: 12px; color: #5b6b80; margin-bottom: 7px; }
+.calc-field span { display: block; margin-bottom: 3px; }
+.calc-input { width: 100%; box-sizing: border-box; border: 1px solid #d6e1ef; border-radius: 7px; padding: 6px 8px; font-size: 13px; color: #1f3a5f; background: #fff; }
+.calc-btn { width: 100%; margin-top: 4px; }
+.calc-result { margin-top: 10px; border-top: 1px dashed #dce6f2; padding-top: 8px; }
+.calc-main { font-size: 13px; font-weight: 700; color: #16355f; margin-bottom: 6px; }
+.calc-line { font-size: 11.5px; color: #475569; line-height: 1.65; }
+.calc-note { font-size: 11px; color: #8494a8; margin-top: 6px; line-height: 1.5; }
+.calc-error { font-size: 12px; color: #b42318; }

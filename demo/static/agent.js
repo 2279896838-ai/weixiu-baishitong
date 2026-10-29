@@ -21,7 +21,8 @@
     checklist: { name: '点检清单', desc: '按设备与频次生成电子点检清单' },
     dashboard: { name: '异常看板', desc: '汇总点检提交、异常分布与未闭环工单' },
     workorder: { name: '工单流转', desc: '由异常编号创建维修工单并跟踪状态' },
-    equipment: { name: '设备台账', desc: '按名称或编码查询设备参数与安全规则' }
+    equipment: { name: '设备台账', desc: '按名称或编码查询设备参数与安全规则' },
+    calculator: { name: '工艺计算', desc: '矿浆体积、矿浆密度、浓密机底流流量网页自算' }
   };
 
   var dom = {};
@@ -372,16 +373,51 @@
     container.appendChild(row);
   }
 
+
+  function parseCalcQuery(message) {
+    var text = String(message || '');
+    var num = function (regex) {
+      var m = text.match(regex);
+      return m ? Number(m[1]) : 0;
+    };
+    if (/底流/.test(text)) {
+      var q = num(/(?:溢流流量|给矿量|处理量)\s*([\d.]+)/) || num(/([\d.]+)\s*m³\/h/);
+      var range = text.match(/由\s*([\d.]+)\s*%\s*提升至\s*([\d.]+)\s*%/);
+      var cf = range ? Number(range[1]) : num(/给矿浓度\s*([\d.]+)\s*%/);
+      var cu = range ? Number(range[2]) : num(/底流浓度\s*([\d.]+)\s*%/);
+      if (q && cf && cu) return { def: CALC_DEFS.underflow, values: { q: q, cf: cf, cu: cu } };
+    }
+    if (/密度/.test(text) && /固体密度|矿浆密度/.test(text)) {
+      var c = num(/(?:矿浆)?浓度\s*([\d.]+)\s*%/);
+      var rs = num(/固体密度\s*([\d.]+)/);
+      var rw = num(/清水密度\s*([\d.]+)/) || 1;
+      if (c && rs) return { def: CALC_DEFS.density, values: { c: c, rs: rs, rw: rw } };
+    }
+    if (/体积|处理量/.test(text)) {
+      var qv = num(/处理量\s*([\d.]+)\s*t\/h/) || num(/([\d.]+)\s*t\/h/);
+      var cv = num(/(?:原矿|矿浆|质量)?浓度\s*([\d.]+)\s*%/);
+      var rho = num(/(?:矿浆)?密度\s*([\d.]+)\s*t\/m³/) || num(/密度\s*([\d.]+)/);
+      if (qv && cv && rho) return { def: CALC_DEFS.volume, values: { q: qv, c: cv, rho: rho } };
+    }
+    return null;
+  }
+
+  function isGeneralKnowledgeQuery(text) {
+    return /旋流器|浓密机|球磨机|浮选|渣浆泵|回转窑|给料机|真空|过滤|磨矿|选型|计算|求|多少|密度|浓度|压力|细度|溢流|底流|机理|原理|差别|区别|是什么/.test(String(text || "")) &&
+      !/这台|当前设备|该设备|本设备/.test(String(text || ""));
+  }
+
   function plan(message) {
     var text = String(message || '').trim();
     if (state.guide && state.guide.active && text.length <= 16 &&
         /^(是|否|不确定|已确认|已完成|完成|无法完成|正常|异常|有|没有|不能|可以|刀|气)/.test(text)) {
       return { tool: 'guide_answer', args: { reply: text } };
     }
-    if (/点检|检查表|清单|巡检/.test(text)) { return { tool: 'checklist' }; }
+    if (/点检|检查表|点检表|点检清单|巡检表|生成.*(清单|检查表)|来一份.*清单/.test(text)) { return { tool: 'checklist' }; }
     if (/工单|派单|报修|结案/.test(text)) { return { tool: 'workorder' }; }
     if (/看板|统计|汇总|异常分布|趋势/.test(text)) { return { tool: 'dashboard' }; }
-    if (/排查|一步步|逐步|引导|故障树|带我/.test(text)) { return { tool: 'guide' }; }
+    if (/一步步|逐步|引导|故障树|带我|进入排查/.test(text)) { return { tool: 'guide' }; }
+    if (/\d/.test(text) && /(求|计算|算出|估算|换算|多少)/.test(text) && /(体积|密度|底流|矿浆)/.test(text)) { return { tool: 'calculator' }; }
     if (/选型|磨矿|处理量|分级|填充率|容积|控制参数|工艺计算|设备选型方案/.test(text)) { return { tool: 'fault_qa' }; }
     if (/设备(参数|台账|安全规则)|查一下设备|设备信息|设备清单/.test(text)) { return { tool: 'equipment' }; }
     return { tool: 'fault_qa' };
@@ -448,18 +484,45 @@
       var workorder = await api('/api/workorders', { method: 'POST', body: { anomalyId: anomalyMatch[0].toUpperCase(), note: message, operator: 'teacher' } });
       return { tool: tool, ok: true, detail: workorder.workorderNo || '', render: function (container) { renderWorkorder(container, workorder); } };
     }
+
+    if (tool === 'calculator') {
+      var calc = parseCalcQuery(message);
+      if (!calc) {
+        return {
+          tool: 'calculator', ok: true, detail: '请在右侧计算器输入',
+          render: function (container) {
+            var block = section(container, '工艺计算');
+            block.appendChild(el('p', 'conclusion', '已识别为工艺计算，请使用右侧“工艺计算器”输入参数；也可直接在消息中给出“处理量/浓度/密度/底流浓度”等数值。'));
+          }
+        };
+      }
+      var out = calc.def.compute(calc.values);
+      return {
+        tool: 'calculator', ok: true, detail: '网页自算',
+        render: function (container) {
+          var block = section(container, '工艺计算（网页自算）');
+          if (!out) {
+            block.appendChild(el('p', 'conclusion', '输入数值不完整，请在右侧计算器补充。'));
+            return;
+          }
+          block.appendChild(el('p', 'conclusion', out.main));
+          out.lines.forEach(function (line) { block.appendChild(el('div', 'kb-source-line', line)); });
+          block.appendChild(el('div', 'kb-risk', '结果为简化静态计算，工程选型需用流量计/浓度计与试验数据复核。'));
+        }
+      };
+    }
     if (tool === 'equipment') {
       var list = await api('/api/equipment');
       return { tool: tool, ok: true, detail: '13 台', render: function (container) { renderEquipment(container, list); } };
     }
     if (tool === 'guide') {
-      var guide = await api('/api/chat', { method: 'POST', body: { sessionId: state.sessionId, message: message, role: 'student', equipmentCode: state.equipmentCode } });
+      var guide = await api('/api/chat', { method: 'POST', body: { sessionId: state.sessionId, message: message, role: 'student', equipmentCode: isGeneralKnowledgeQuery(message) ? "" : state.equipmentCode } });
       if (guide.tree) {
         return { tool: tool, ok: true, detail: guide.tree.treeId || '', render: function (container) { renderGuide(container, guide.tree); } };
       }
       return { tool: 'fault_qa', ok: true, detail: (guide.citations || []).length + ' 条引用', render: function (container) { renderDiagnosis(container, guide); } };
     }
-    var diagnosis = await api('/api/chat', { method: 'POST', body: { sessionId: state.sessionId, message: message, role: 'student', equipmentCode: state.equipmentCode } });
+    var diagnosis = await api('/api/chat', { method: 'POST', body: { sessionId: state.sessionId, message: message, role: 'student', equipmentCode: isGeneralKnowledgeQuery(message) ? '' : state.equipmentCode } });
     return {
       tool: 'fault_qa', ok: true,
       detail: (diagnosis.citations || []).length + ' 条引用',
@@ -575,6 +638,132 @@
     }
   }
 
+
+  // ---------- 工艺计算器 ----------
+  var CALC_DEFS = {
+    volume: {
+      fields: [
+        { key: 'q', label: '干矿处理量 (t/h)', value: '50' },
+        { key: 'c', label: '质量浓度 (%)', value: '70' },
+        { key: 'rho', label: '矿浆密度 (t/m³)', value: '1.9' }
+      ],
+      compute: function (v) {
+        if (!(v.q > 0 && v.c > 0 && v.c < 100 && v.rho > 0)) return null;
+        var c = v.c / 100;
+        var mass = v.q / c;
+        var vol = mass / v.rho;
+        var water = mass - v.q;
+        return {
+          main: '矿浆体积 ≈ ' + fmt(vol) + ' m³/h',
+          lines: [
+            '矿浆质量流量 = Q / C = ' + fmt(v.q) + ' / ' + fmt(c, 3) + ' = ' + fmt(mass) + ' t/h',
+            '矿浆体积 = 质量流量 / 密度 = ' + fmt(mass) + ' / ' + fmt(v.rho) + ' = ' + fmt(vol) + ' m³/h',
+            '其中水质量 ≈ ' + fmt(water) + ' t/h'
+          ]
+        };
+      }
+    },
+    density: {
+      fields: [
+        { key: 'c', label: '质量浓度 (%)', value: '35' },
+        { key: 'rs', label: '固体密度 (t/m³)', value: '2.7' },
+        { key: 'rw', label: '清水密度 (t/m³)', value: '1' }
+      ],
+      compute: function (v) {
+        if (!(v.c > 0 && v.c < 100 && v.rs > 0 && v.rw > 0)) return null;
+        var c = v.c / 100;
+        var inv = c / v.rs + (1 - c) / v.rw;
+        var rho = 1 / inv;
+        return {
+          main: '矿浆密度 ≈ ' + fmt(rho) + ' t/m³',
+          lines: [
+            '1/ρ = C/ρs + (1-C)/ρw = ' + fmt(c, 3) + '/' + fmt(v.rs) + ' + ' + fmt(1 - c, 3) + '/' + fmt(v.rw),
+            '1/ρ = ' + fmt(inv, 4) + '，ρ = ' + fmt(rho) + ' t/m³'
+          ]
+        };
+      }
+    },
+    underflow: {
+      fields: [
+        { key: 'q', label: '给矿量 / 溢流量 (m³/h)', value: '180' },
+        { key: 'cf', label: '给矿浓度 (%)', value: '40' },
+        { key: 'cu', label: '目标底流浓度 (%)', value: '55' }
+      ],
+      compute: function (v) {
+        if (!(v.q > 0 && v.cf > 0 && v.cu > 0 && v.cf < 100 && v.cu < 100)) return null;
+        var cf = v.cf / 100, cu = v.cu / 100;
+        var qu = v.q * cf / cu;
+        var qo = v.q - qu;
+        var lines = [
+          '若 ' + fmt(v.q) + ' 为给矿量：Q底流 = Q给 × C给 / C底 = ' + fmt(qu) + ' m³/h',
+          '对应溢流 ≈ ' + fmt(qo) + ' m³/h'
+        ];
+        if (cu > cf) {
+          var alt = cf * v.q / (cu - cf);
+          lines.push('若 ' + fmt(v.q) + ' 为溢流量：Q底流 ≈ ' + fmt(alt) + ' m³/h（给矿量 ≈ ' + fmt(alt + v.q) + ' m³/h）');
+        }
+        return { main: '底流流量估算：' + fmt(qu) + ' m³/h（按给矿量理解）', lines: lines };
+      }
+    }
+  };
+
+  function fmt(value, digits) {
+    if (!isFinite(value)) return '—';
+    var d = digits === undefined ? 2 : digits;
+    return Number(value).toFixed(d);
+  }
+  function calcFieldValue(key) {
+    var node = byId('calc_' + key);
+    var value = node ? Number(node.value) : 0;
+    return isFinite(value) ? value : 0;
+  }
+  function renderCalcFields() {
+    var select = byId('calcType');
+    var host = byId('calcFields');
+    var result = byId('calcResult');
+    if (!select || !host) return;
+    var def = CALC_DEFS[select.value] || CALC_DEFS.volume;
+    host.textContent = '';
+    def.fields.forEach(function (field) {
+      var label = el('label', 'calc-field');
+      label.appendChild(el('span', '', field.label));
+      var input = el('input', 'calc-input');
+      input.id = 'calc_' + field.key;
+      input.type = 'number';
+      input.step = 'any';
+      input.value = field.value;
+      label.appendChild(input);
+      host.appendChild(label);
+    });
+    if (result) { result.hidden = true; result.textContent = ''; }
+  }
+  function runCalc() {
+    var select = byId('calcType');
+    var result = byId('calcResult');
+    if (!select || !result) return;
+    var def = CALC_DEFS[select.value] || CALC_DEFS.volume;
+    var values = {};
+    def.fields.forEach(function (field) { values[field.key] = calcFieldValue(field.key); });
+    var out = def.compute(values);
+    result.textContent = '';
+    if (!out) {
+      result.appendChild(el('div', 'calc-error', '请输入有效数值（浓度 0–100，密度/处理量大于 0）。'));
+    } else {
+      result.appendChild(el('div', 'calc-main', out.main));
+      out.lines.forEach(function (line) { result.appendChild(el('div', 'calc-line', line)); });
+      result.appendChild(el('div', 'calc-note', '结果为简化静态计算，工程选型需用流量计/浓度计与试验数据复核。'));
+    }
+    result.hidden = false;
+  }
+  function initCalculator() {
+    var select = byId('calcType');
+    if (!select) return;
+    renderCalcFields();
+    select.addEventListener('change', renderCalcFields);
+    var button = byId('calcBtn');
+    if (button) button.addEventListener('click', runCalc);
+  }
+
   function init() {
     if (window.self !== window.top) { document.body.classList.add('embedded'); }
     dom = {
@@ -596,6 +785,7 @@
     };
     renderToolList();
     bindEvents();
+    initCalculator();
     updateCount();
     loadHealth();
     loadEquipment();

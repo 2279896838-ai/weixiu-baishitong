@@ -62,6 +62,20 @@
           <div><dt>工具调用</dt><dd id="toolCount">0 次</dd></div>
         </dl>
       </section>
+      <section class="side-card calc-card">
+        <h3>工艺计算器</h3>
+        <p class="calc-hint">矿浆体积 / 矿浆密度 / 浓密机底流，输入后即时计算</p>
+        <label class="calc-field"><span>计算类型</span>
+          <select id="calcType">
+            <option value="volume">矿浆体积（m³/h）</option>
+            <option value="density">矿浆密度（t/m³）</option>
+            <option value="underflow">浓密机底流流量</option>
+          </select>
+        </label>
+        <div id="calcFields"></div>
+        <button class="btn btn-primary btn-sm calc-btn" id="calcBtn" type="button">计算</button>
+        <div class="calc-result" id="calcResult" hidden></div>
+      </section>
       <section class="side-card danger-card">
         <h3>安全优先</h3>
         <p>出现冒烟、明火、漏电、钢水喷溅、煤气异味或人员受伤时，智能体先拦截并给出停机、断电、撤离与转人工路径，不提供危险操作步骤。</p>
