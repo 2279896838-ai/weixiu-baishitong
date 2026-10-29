@@ -1174,9 +1174,10 @@
   }
 
   function handleQAChat(sid, session, slots, message) {
-    var processMode = /怎么算|如何计算|计算公式|怎么选|如何选|选型|匹配|填充率|转速率|临界转速|斜度|燃烧器|产能|处理量|参数|沉降面积|底流浓度|底流|浓密|浓缩|絮凝|澄清|放大|设计|方案|选型方案|磨矿|分级|容积|控制参数|设备选型/.test(message) &&
+    var faultSymptom = /电流|忽高忽低|波动|异响|故障|振动|温升|跑偏|打滑|漏油|漏浆|堵塞|磨损|报警|跳停|过热|声音|细度波动/.test(message);
+    var processMode = !faultSymptom && /怎么算|如何计算|计算公式|怎么选|如何选|选型|匹配|填充率|转速率|临界转速|斜度|燃烧器|产能|处理量|参数|沉降面积|底流浓度|底流|浓密|浓缩|絮凝|澄清|放大|设计|方案|选型方案|磨矿|分级|容积|控制参数|设备选型/.test(message) &&
       (slots.category === 'BAL' || slots.category === 'KIL' || slots.category === 'THK' || /浮选|磁选|旋流器|筛|皮带|输送|泵|除尘|换热|冷却塔|起重|天车|变频|料仓|阀门|仪表|浓密|球磨|磨矿|分级|回转窑|冶金|选矿|冶炼|真空|过滤|滤布|浓缩|沉降|渣浆|清水/.test(message));
-    var conceptMode = /是什么|什么是|有什么|差别|区别|差异|功能|作用|原理|结构|组成|为什么|如何工作|磨损位置|常见磨损|对比/.test(message) &&
+    var conceptMode = !faultSymptom && /是什么|什么是|有什么|差别|区别|差异|功能|作用|原理|结构|组成|为什么|如何工作|磨损位置|常见磨损|对比/.test(message) &&
       (slots.category === 'BAL' || slots.category === 'KIL' || slots.category === 'THK' || /浮选|磁选|旋流器|筛|皮带|输送|泵|除尘|换热|冷却塔|起重|天车|变频|料仓|阀门|仪表|浓密|球磨|回转窑|冶金|选矿|冶炼|浓缩|沉降|渣浆|清水/.test(message));
     if ((processMode || conceptMode) && !slots.symptom) {
       slots.symptom = processMode ? '工艺参数计算与选型' : '设备原理与结构';
