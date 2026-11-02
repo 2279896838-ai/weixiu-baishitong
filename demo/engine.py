@@ -1714,7 +1714,7 @@ class Engine:
         symptom = _safe_str(slots.get("symptom"))
         equipment = slots.get("equipment")
         category = _safe_str(slots.get("category")).upper()
-        fault_symptom = bool(re.search(r"电流|忽高忽低|波动|异响|故障|振动|温升|跑偏|打滑|漏油|漏浆|堵塞|磨损|报警|跳停|过热|声音|细度波动", text))
+        fault_symptom = bool(re.search(r"电流|忽高忽低|波动|异响|故障|振动|温升|跑偏|打滑|漏油|漏浆|堵塞|报警|跳停|过热|声音|细度波动", text))
         process_mode = bool(
             re.search(r"怎么算|如何计算|计算公式|怎么选|如何选|选型|匹配|填充率|转速率|临界转速|斜度|燃烧器|产能|处理量|参数|沉降面积|底流浓度|底流|浓密|浓缩|絮凝|澄清|放大|设计|方案|选型方案|磨矿|分级|容积|控制参数|设备选型", text)
         ) and not fault_symptom and (category in ("BAL", "KIL", "THK") or re.search(r"浮选|磁选|旋流器|筛|皮带|输送|泵|除尘|换热|冷却塔|起重|天车|变频|料仓|阀门|仪表|浓密|球磨|磨矿|分级|回转窑|冶金|选矿|冶炼|浓缩|沉降|真空|过滤|滤布", text))

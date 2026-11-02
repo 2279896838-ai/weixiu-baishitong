@@ -597,6 +597,17 @@
     dom.equipmentSelect.addEventListener('change', function () {
       state.equipmentCode = dom.equipmentSelect.value;
     });
+    if (dom.clearChatBtn) {
+      dom.clearChatBtn.addEventListener('click', function () {
+        if (state.busy) return;
+        dom.messages.textContent = '';
+        dom.chatEmpty.hidden = false;
+        state.guide = null;
+        state.toolCalls = 0;
+        state.currentTool = '';
+        dom.toolCount.textContent = '0 次';
+      });
+    }
   }
 
   function updateCount() {
@@ -777,6 +788,7 @@
       chatInput: byId('chatInput'),
       charCount: byId('charCount'),
       sendBtn: byId('sendBtn'),
+      clearChatBtn: byId('clearChatBtn'),
       toolList: byId('toolList'),
       sessionMeta: byId('sessionMeta'),
       runMode: byId('runMode'),

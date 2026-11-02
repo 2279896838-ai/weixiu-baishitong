@@ -2047,3 +2047,25 @@ body.modal-open { overflow: hidden; }
 .kb-empty { grid-column: 1 / -1; background: #fff; border: 1px dashed #cfdbea; border-radius: 12px; padding: 30px; text-align: center; color: #5b6b80; }
 .kb-empty h3 { margin: 0 0 6px; color: #16355f; }
 @media (max-width: 900px) { .kb-list { grid-template-columns: 1fr; } .kb-actions { width: 100%; } .kb-actions .text-input { min-width: 0; flex: 1 1 160px; } }
+
+/* 工艺计算页签 */
+.calc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.calc-card { padding: 18px 18px 16px; }
+.calc-head { margin-bottom: 12px; }
+.calc-head h3 { font-size: 16px; margin: 2px 0 0; color: #17365f; }
+.calc-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
+.calc-card .form-field { margin: 0; font-size: 12px; }
+.calc-card .form-field input { margin-top: 4px; }
+.calc-card .btn { width: 100%; }
+.calc-output { margin-top: 12px; border-top: 1px dashed #dbe5f1; padding-top: 10px; }
+.calc-main { font-size: 15px; font-weight: 700; color: #12345d; margin-bottom: 7px; }
+.calc-line { font-size: 12px; color: #4a5b71; line-height: 1.7; }
+.calc-note { font-size: 11px; color: #8190a4; margin-top: 7px; line-height: 1.5; }
+.calc-error { font-size: 12px; color: #b42318; }
+.calc-formula { margin-top: 11px; font-size: 12px; color: #5b6c82; }
+.calc-formula summary { cursor: pointer; color: #24517f; }
+.calc-formula p { margin: 7px 0 0; line-height: 1.6; }
+@media (max-width: 900px) { .calc-grid { grid-template-columns: 1fr; } .calc-fields { grid-template-columns: 1fr; } }
+
+.kb-critical { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #52657c; white-space: nowrap; }
+.kb-critical input { accent-color: #1c4f84; }

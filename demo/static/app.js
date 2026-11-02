@@ -90,6 +90,7 @@
     acceptorInput: byId('acceptorInput'), closeOperatorInput: byId('closeOperatorInput'),
     residualRiskInput: byId('residualRiskInput'), closeFormAlert: byId('closeFormAlert'),
     closeSubmitBtn: byId('closeSubmitBtn'), toastHost: byId('toastHost'),
+    footerMeta: byId('footerMeta'),
     tabs: Array.prototype.slice.call(document.querySelectorAll('.tab')),
     panels: Array.prototype.slice.call(document.querySelectorAll('.tab-panel'))
   };
@@ -447,6 +448,10 @@
         throw new ApiError('服务状态异常：' + data.status, 0, 'HEALTH');
       }
       state.health = { status: 'ok', mode: String((data && data.mode) || 'offline') };
+      if (dom.footerMeta) {
+        var stats = (data && data.stats) || {};
+        dom.footerMeta.textContent = 'v1.1.0 · ' + (stats.knowledge || '—') + ' 条知识 · ' + (stats.checklists ? stats.checklists + ' 项点检' : '本地知识库');
+      }
       renderMode();
       hideGlobalAlert();
     } catch (err) {
@@ -630,7 +635,7 @@
 
   // ---------- 页签 ----------
   function switchTab(tab) {
-    var valid = ['qa', 'checklist', 'dashboard', 'workorders', 'knowledge', 'agent'];
+    var valid = ['qa', 'checklist', 'dashboard', 'workorders', 'knowledge', 'calc', 'agent'];
     if (valid.indexOf(tab) === -1) tab = 'qa';
     state.activeTab = tab;
     dom.tabs.forEach(function (btn) {
@@ -2716,6 +2721,8 @@
     if (kbSearch) kbSearch.addEventListener('input', renderKnowledge);
     if (kbCategory) kbCategory.addEventListener('change', renderKnowledge);
     if (kbSource) kbSource.addEventListener('change', renderKnowledge);
+  var kbCritical = byId('kbCritical');
+  if (kbCritical) kbCritical.addEventListener('change', renderKnowledge);
 
     dom.modalCloseBtn.addEventListener('click', function () { closeClosureModal(); });
     dom.modalCancelBtn.addEventListener('click', function () { closeClosureModal(); });
@@ -2810,7 +2817,9 @@
     var q = String((byId('kbSearch') && byId('kbSearch').value) || '').trim().toLowerCase();
     var category = (byId('kbCategory') && byId('kbCategory').value) || '';
     var source = (byId('kbSource') && byId('kbSource').value) || '';
+    var criticalOnly = !!(byId('kbCritical') && byId('kbCritical').checked);
     var items = state.knowledge.items.filter(function (entry) {
+      if (criticalOnly && !entry.securityCritical) return false;
       if (category && String(entry.equipmentCategory || '').toUpperCase() !== category) return false;
       var src = entry.source && entry.source.type ? String(entry.source.type).toUpperCase() : '';
       if (source && src !== source) return false;
@@ -2934,6 +2943,87 @@
   }
 
   // ---------- 启动 ----------
+
+  // ---------- 工艺计算器 ----------
+  function calcFmt(value, digits) {
+    if (!isFinite(value)) return '—';
+    return Number(value).toFixed(digits === undefined ? 2 : digits);
+  }
+  function calcVal(id) {
+    var node = byId(id);
+    var value = node ? Number(node.value) : 0;
+    return isFinite(value) ? value : 0;
+  }
+  function calcRender(id, main, lines, note) {
+    var out = byId(id);
+    if (!out) return;
+    out.textContent = '';
+    out.appendChild(el('div', 'calc-main', main));
+    (lines || []).forEach(function (line) { out.appendChild(el('div', 'calc-line', line)); });
+    out.appendChild(el('div', 'calc-note', note || '简化静态计算，工程应用需用试验数据与仪表复核。'));
+    out.hidden = false;
+  }
+  function calcFail(id, message) {
+    var out = byId(id);
+    if (!out) return;
+    out.textContent = '';
+    out.appendChild(el('div', 'calc-error', message));
+    out.hidden = false;
+  }
+  function runMainCalc(kind) {
+    if (kind === 'volume') {
+      var q = calcVal('calcVolQ'), c = calcVal('calcVolC'), rho = calcVal('calcVolRho');
+      if (!(q > 0 && c > 0 && c < 100 && rho > 0)) return calcFail('calcVolOut', '请输入有效数值：处理量 > 0、浓度 0–100%、密度 > 0。');
+      var mass = q / (c / 100), vol = mass / rho;
+      return calcRender('calcVolOut', '矿浆体积 ≈ ' + calcFmt(vol) + ' m³/h', [
+        '矿浆质量流量 = ' + calcFmt(q) + ' / ' + calcFmt(c / 100, 3) + ' = ' + calcFmt(mass) + ' t/h',
+        '矿浆体积 = ' + calcFmt(mass) + ' / ' + calcFmt(rho) + ' = ' + calcFmt(vol) + ' m³/h',
+        '其中水质量 ≈ ' + calcFmt(mass - q) + ' t/h'
+      ]);
+    }
+    if (kind === 'density') {
+      var dc = calcVal('calcDenC'), rs = calcVal('calcDenRs'), rw = calcVal('calcDenRw');
+      if (!(dc > 0 && dc < 100 && rs > 0 && rw > 0)) return calcFail('calcDenOut', '请输入有效数值：浓度 0–100%、固体/清水密度 > 0。');
+      var frac = dc / 100;
+      var inv = frac / rs + (1 - frac) / rw;
+      var density = 1 / inv;
+      return calcRender('calcDenOut', '矿浆密度 ≈ ' + calcFmt(density) + ' t/m³', [
+        '1/ρ = C/ρs + (1−C)/ρw = ' + calcFmt(frac, 3) + '/' + calcFmt(rs) + ' + ' + calcFmt(1 - frac, 3) + '/' + calcFmt(rw),
+        '1/ρ = ' + calcFmt(inv, 4) + '，ρ = ' + calcFmt(density) + ' t/m³'
+      ]);
+    }
+    if (kind === 'underflow') {
+      var tq = calcVal('calcThkQ'), cf = calcVal('calcThkCf'), cu = calcVal('calcThkCu');
+      if (!(tq > 0 && cf > 0 && cf < 100 && cu > 0 && cu < 100)) return calcFail('calcThkOut', '请输入有效数值：流量 > 0、浓度 0–100%。');
+      var f1 = cf / 100, f2 = cu / 100;
+      var qu = tq * f1 / f2;
+      var lines = [
+        '按给矿量：Q底 = Q给 × C给 / C底 = ' + calcFmt(qu) + ' m³/h',
+        '对应溢流 ≈ ' + calcFmt(tq - qu) + ' m³/h'
+      ];
+      if (f2 > f1) {
+        var alt = f1 * tq / (f2 - f1);
+        lines.push('若输入为溢流量：Q底 ≈ ' + calcFmt(alt) + ' m³/h（给矿量 ≈ ' + calcFmt(alt + tq) + ' m³/h）');
+      }
+      return calcRender('calcThkOut', '底流流量估算：' + calcFmt(qu) + ' m³/h（按给矿量理解）', lines, '先确认输入是给矿量还是溢流量；结果为简化物料衡算，未计溢流夹带与密度变化。');
+    }
+    if (kind === 'millvolume') {
+      var mq = calcVal('calcMillQ'), qv = calcVal('calcMillQv');
+      if (!(mq > 0 && qv > 0)) return calcFail('calcMillOut', '请输入有效数值：处理量 > 0、单位容积产能 > 0。');
+      var v = mq / qv;
+      return calcRender('calcMillOut', '所需磨机有效容积 ≈ ' + calcFmt(v) + ' m³', [
+        'V = Q / q = ' + calcFmt(mq) + ' / ' + calcFmt(qv) + ' = ' + calcFmt(v) + ' m³',
+        '建议设计容积 ≈ ' + calcFmt(v * 1.1) + ' m³（留 10% 余量）',
+        'q 必须由磨矿试验或同类矿实测确定，不能直接套经验值。'
+      ]);
+    }
+  }
+  function setupCalculators() {
+    Array.prototype.slice.call(document.querySelectorAll('[data-calc]')).forEach(function (button) {
+      button.addEventListener('click', function () { runMainCalc(button.getAttribute('data-calc')); });
+    });
+  }
+
   function init() {
     bindEvents();
     installDashboardErrorState();
@@ -2943,7 +3033,8 @@
     updateSendState();
     dom.generateChecklistBtn.disabled = true;
     var initial = String(location.hash || '').replace('#', '');
-    switchTab(['qa', 'checklist', 'dashboard', 'workorders', 'knowledge'].indexOf(initial) >= 0 ? initial : 'qa');
+    switchTab(['qa', 'checklist', 'dashboard', 'workorders', 'knowledge', 'calc'].indexOf(initial) >= 0 ? initial : 'qa');
+    setupCalculators();
     loadHealth();
     loadEquipment({ silent: true });
   }

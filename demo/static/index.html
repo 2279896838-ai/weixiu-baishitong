@@ -57,6 +57,9 @@
         <button class="tab" id="tabBtn-knowledge" type="button" role="tab" data-tab="knowledge" aria-selected="false" aria-controls="panel-knowledge" tabindex="-1">
           <span class="tab-num">05</span><span>知识库</span>
         </button>
+        <button class="tab" id="tabBtn-calc" type="button" role="tab" data-tab="calc" aria-selected="false" aria-controls="panel-calc" tabindex="-1">
+          <span class="tab-num">06</span><span>工艺计算</span>
+        </button>
       </div>
       <div class="session-meta" id="sessionMeta" title="当前会话编号">会话 —</div>
     </div>
@@ -365,6 +368,7 @@
         <div class="page-actions kb-actions">
           <input id="kbSearch" class="text-input" type="search" placeholder="搜索设备、现象、原因…" aria-label="搜索知识库">
           <select id="kbCategory" class="select" aria-label="按设备类别筛选"></select>
+          <label class="kb-critical"><input type="checkbox" id="kbCritical"> 只看安全关键</label>
           <select id="kbSource" class="select" aria-label="按来源筛选">
             <option value="">全部来源</option>
             <option value="TEACHER_INTERVIEW">教师口述</option>
@@ -377,11 +381,72 @@
       <div class="kb-summary" id="kbSummary">正在加载知识库…</div>
       <div class="kb-list" id="kbList"></div>
     </section>
+
+    <section class="tab-panel" id="panel-calc" role="tabpanel" aria-labelledby="tabBtn-calc" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">工艺计算 · 网页自算 · 公式可追溯</div>
+          <h2>选矿工艺计算器</h2>
+          <p>常用矿浆与浓密机计算，输入参数即得结果；结果仅作教学与方案估算，工程选型需用试验数据复核。</p>
+        </div>
+        <div class="page-actions"><span class="pill pill-muted">无需后端 · 本地计算</span></div>
+      </div>
+      <div class="calc-grid">
+        <section class="card calc-card">
+          <header class="calc-head"><div><span class="eyebrow">01 · 矿浆体积</span><h3>处理量 → 矿浆体积</h3></div></header>
+          <div class="calc-fields">
+            <label class="form-field">干矿处理量 Q（t/h）<input id="calcVolQ" type="number" step="any" value="50"></label>
+            <label class="form-field">质量浓度 C（%）<input id="calcVolC" type="number" step="any" value="70"></label>
+            <label class="form-field">矿浆密度 ρ（t/m³）<input id="calcVolRho" type="number" step="any" value="1.9"></label>
+          </div>
+          <button class="btn btn-primary btn-sm" type="button" data-calc="volume">计算矿浆体积</button>
+          <div class="calc-output" id="calcVolOut" hidden></div>
+          <details class="calc-formula"><summary>公式与说明</summary><p>V = Q / (C × ρ)，C 为质量浓度小数；矿浆质量流量 = Q / C。</p></details>
+        </section>
+
+        <section class="card calc-card">
+          <header class="calc-head"><div><span class="eyebrow">02 · 矿浆密度</span><h3>浓度 + 密度 → 矿浆密度</h3></div></header>
+          <div class="calc-fields">
+            <label class="form-field">质量浓度 C（%）<input id="calcDenC" type="number" step="any" value="35"></label>
+            <label class="form-field">固体密度（t/m³）<input id="calcDenRs" type="number" step="any" value="2.7"></label>
+            <label class="form-field">清水密度（t/m³）<input id="calcDenRw" type="number" step="any" value="1"></label>
+          </div>
+          <button class="btn btn-primary btn-sm" type="button" data-calc="density">计算矿浆密度</button>
+          <div class="calc-output" id="calcDenOut" hidden></div>
+          <details class="calc-formula"><summary>公式与说明</summary><p>1/ρ = C/ρs + (1−C)/ρw，按质量浓度与固体/水体积加权。</p></details>
+        </section>
+
+        <section class="card calc-card">
+          <header class="calc-head"><div><span class="eyebrow">03 · 浓密机底流</span><h3>底流浓度提升 → 底流流量</h3></div></header>
+          <div class="calc-fields">
+            <label class="form-field">给矿量 / 溢流量（m³/h）<input id="calcThkQ" type="number" step="any" value="180"></label>
+            <label class="form-field">给矿浓度（%）<input id="calcThkCf" type="number" step="any" value="40"></label>
+            <label class="form-field">目标底流浓度（%）<input id="calcThkCu" type="number" step="any" value="55"></label>
+          </div>
+          <button class="btn btn-primary btn-sm" type="button" data-calc="underflow">计算底流流量</button>
+          <div class="calc-output" id="calcThkOut" hidden></div>
+          <details class="calc-formula"><summary>公式与说明</summary><p>按给矿量：Q底 = Q给 × C给 / C底；若输入为溢流量，另算 Q底 = C给 × Q溢 / (C底−C给)。</p></details>
+        </section>
+
+        <section class="card calc-card">
+          <header class="calc-head"><div><span class="eyebrow">04 · 磨机容积</span><h3>处理量 → 所需磨机容积</h3></div></header>
+          <div class="calc-fields">
+            <label class="form-field">处理量 Q（t/h）<input id="calcMillQ" type="number" step="any" value="150"></label>
+            <label class="form-field">单位容积产能 q（t/(m³·h)）<input id="calcMillQv" type="number" step="any" value="1.05"></label>
+          </div>
+          <button class="btn btn-primary btn-sm" type="button" data-calc="millvolume">估算所需容积</button>
+          <div class="calc-output" id="calcMillOut" hidden></div>
+          <details class="calc-formula"><summary>公式与说明</summary><p>V = Q / q；建议再留 10% 余量。q 必须由磨矿试验或同类矿实测确定。</p></details>
+        </section>
+      </div>
+    </section>
+
   </main>
 
   <footer class="site-footer">
     <span>维修百事通 · 设备故障诊断助手</span>
     <span>离线优先 · 本地知识库 · 数据仅用于实训教学</span>
+    <span id="footerMeta">v1.1.0 · 本地知识库</span>
   </footer>
 
   <div class="toast-host" id="toastHost" aria-live="polite" aria-atomic="false"></div>
