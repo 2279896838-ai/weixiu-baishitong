@@ -19,3 +19,6 @@ templates/*.err
 templates/kb-*.html
 templates/push_*.py
 templates/agent-shot.png
+
+# 模型请求调试落盘
+logs/

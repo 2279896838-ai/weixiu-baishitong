@@ -411,6 +411,7 @@ class Engine:
         self._data_warnings = []
         self._runtime_warnings = []
         self._last_llm_error = ""
+        self._last_llm_dump_path = ""
         self._store = None
         self._store_error = ""
         try:
@@ -3551,6 +3552,60 @@ class Engine:
             {"role": "user", "content": user_prompt},
         ]
 
+    @staticmethod
+    def _llm_dump_enabled():
+        value = _safe_str(os.environ.get("LLM_DEBUG_DUMP", "1")).lower()
+        return value not in ("0", "false", "no", "off")
+
+    @classmethod
+    def _dump_llm_exchange(cls, path, payload_obj, url, model, stage, extra=None):
+        """把发给模型服务商的请求/响应完整 JSON 另存到 logs/llm-requests。
+
+        默认开启，可用 LLM_DEBUG_DUMP=0 关闭；目录可用 LLM_DEBUG_DUMP_DIR 覆盖。
+        Authorization 只记录占位符，不落盘 API Key。
+        """
+        if not cls._llm_dump_enabled():
+            return path
+        try:
+            record = None
+            if path and os.path.exists(path):
+                try:
+                    with open(path, "r", encoding="utf-8") as handle:
+                        record = json.load(handle)
+                except Exception:
+                    record = None
+            if not isinstance(record, dict):
+                base_dir = _safe_str(os.environ.get("LLM_DEBUG_DUMP_DIR")) or os.path.join(
+                    os.getcwd(), "logs", "llm-requests"
+                )
+                os.makedirs(base_dir, exist_ok=True)
+                stamp = _dt.datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+                path = os.path.join(base_dir, "llm-" + stamp + ".json")
+                record = {
+                    "savedAt": _dt.datetime.now().astimezone().isoformat(),
+                    "model": model,
+                    "url": url,
+                    "request": payload_obj,
+                    "headers": {
+                        "Content-Type": "application/json; charset=utf-8",
+                        "Authorization": "Bearer ***",
+                        "Accept": "application/json",
+                        "User-Agent": "wxbst-demo/1.0",
+                    },
+                    "response": None,
+                    "error": None,
+                }
+            record["stage"] = stage
+            record["updatedAt"] = _dt.datetime.now().astimezone().isoformat()
+            if extra:
+                record.update(extra)
+            with open(path, "w", encoding="utf-8") as handle:
+                json.dump(record, handle, ensure_ascii=False, indent=2)
+            self._last_llm_dump_path = path
+            return path
+        except Exception:
+            return path
+
     def _call_llm(self, messages):
         import ssl as _ssl
         context = None
@@ -3567,16 +3622,16 @@ class Engine:
             url = base + "/chat/completions"
         else:
             url = base + "/v1/chat/completions"
-        payload = json.dumps(
-            {
-                "model": model,
-                "messages": messages,
-                "temperature": 0.2,
-                "max_tokens": 900,
-                "stream": False,
-            },
-            ensure_ascii=False,
-        ).encode("utf-8")
+        payload_obj = {
+            "model": model,
+            "messages": messages,
+            "temperature": 0.2,
+            "max_tokens": 900,
+            "stream": False,
+        }
+        payload = json.dumps(payload_obj, ensure_ascii=False).encode("utf-8")
+        dump_path = self._dump_llm_exchange(None, payload_obj, url, model, "request")
+        self._last_llm_dump_path = dump_path or ""
         request = _urlreq.Request(
             url,
             data=payload,
@@ -3588,10 +3643,19 @@ class Engine:
                 "User-Agent": "wxbst-demo/1.0",
             },
         )
+        started = time.monotonic()
         try:
             with _urlreq.urlopen(request, timeout=60, context=context) as response:
                 raw = response.read(2 * 1024 * 1024)
                 data = json.loads(raw.decode("utf-8", errors="replace"))
+            dump_path = self._dump_llm_exchange(
+                dump_path, payload_obj, url, model, "response",
+                {
+                    "status": getattr(response, "status", None),
+                    "elapsedMs": int((time.monotonic() - started) * 1000),
+                    "response": data,
+                },
+            )
             choices = data.get("choices") if isinstance(data, dict) else None
             if not choices:
                 self._last_llm_error = "LLM 响应缺少 choices"
@@ -3611,9 +3675,25 @@ class Engine:
             except Exception:
                 detail = ""
             self._last_llm_error = f"HTTP {exc.code}: {detail or exc.reason}"
+            self._dump_llm_exchange(
+                dump_path, payload_obj, url, model, "error",
+                {
+                    "status": getattr(exc, "code", None),
+                    "elapsedMs": int((time.monotonic() - started) * 1000),
+                    "error": self._last_llm_error,
+                    "responseRaw": detail,
+                },
+            )
             return None
         except Exception as exc:
             self._last_llm_error = f"{type(exc).__name__}: {exc}"
+            self._dump_llm_exchange(
+                dump_path, payload_obj, url, model, "error",
+                {
+                    "elapsedMs": int((time.monotonic() - started) * 1000),
+                    "error": self._last_llm_error,
+                },
+            )
             return None
 
     @staticmethod

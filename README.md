@@ -43,6 +43,7 @@ docker compose -f docker-compose.prod.yml up -d --build
 - [R1 复盘与缺口](design/productization-round1.md)：改造清单、证据、R2 计划
 - [生产部署与运维指南](docs/productization.md)：配置、Docker/systemd、备份恢复、安全与可观测
 - [网站功能与使用说明](docs/网站使用说明.md)：六页签、工艺计算器、智能体页、缓存更新
+- [模型请求 JSON 调试](docs/模型请求调试.md)：把发给模型服务商的完整请求/响应 JSON 落盘，便于排查上游超时
 
 **已知边界（R2 优先）**：应用级登录/RBAC 与登录页、PostgreSQL/多实例、CI 生产门禁与镜像供应链、Prometheus/告警、压测与 SLO。当前生产访问由 nginx basic auth + Token API 保护；无应用登录页。
 
