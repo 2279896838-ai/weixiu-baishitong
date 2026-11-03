@@ -2312,3 +2312,6 @@ body.qa-active .page { padding-bottom: 0; }
 @media (max-width: 640px) {
   #panel-qa iframe { height: calc(100vh - 190px) !important; min-height: 400px !important; }
 }
+
+/* 去掉当前设备选择 */
+.header-tools .equipment-field { display: none !important; }

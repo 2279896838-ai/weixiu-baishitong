@@ -11,7 +11,8 @@
     equipment: [],
     guide: null,
     busy: false,
-    toolCalls: 0
+    toolCalls: 0,
+    qaSeq: 0
   };
 
   var TOOL_META = {
@@ -423,7 +424,7 @@
     return { tool: 'fault_qa' };
   }
 
-  function findEquipment(text) {
+  function findEquipment(text, allowFallback) {
     var codeMatch = String(text || '').match(/EQ-[A-Z0-9-]+/i);
     if (codeMatch) {
       var code = codeMatch[0].toUpperCase();
@@ -434,21 +435,37 @@
     var low = String(text || '');
     for (var j = 0; j < state.equipment.length; j++) {
       var equipment = state.equipment[j];
-      var tokens = [equipment.name, equipment.category]
+      var tokens = [equipment.name]
         .concat(String(equipment.name || '').split(/[\s（）()、,，/]+/))
-        .concat(equipment.aliases || [])
-        .concat(equipment.commonFaults || []);
+        .concat(equipment.aliases || []);
+      if (allowFallback !== false) {
+        tokens = tokens.concat([equipment.category]).concat(equipment.commonFaults || []);
+      }
       for (var k = 0; k < tokens.length; k++) {
         var token = String(tokens[k] || '');
         if (token && token.length >= 2 && low.indexOf(token) !== -1) { return equipment; }
       }
     }
-    if (state.equipmentCode) {
+    if (allowFallback !== false && state.equipmentCode) {
       for (var m = 0; m < state.equipment.length; m++) {
         if (state.equipment[m].equipmentCode === state.equipmentCode) { return state.equipment[m]; }
       }
     }
-    return state.equipment[0] || null;
+    return allowFallback === false ? null : (state.equipment[0] || null);
+  }
+
+  function qaSessionId(message) {
+    var text = String(message || '');
+    var explicit = findEquipment(text, false);
+    if (explicit) return state.sessionId;
+    if (/^(那|这|它|为什么|怎么回事|还有|然后|呢|对|是的|不是)/.test(text.trim())) return state.sessionId;
+    state.qaSeq += 1;
+    return state.sessionId + '-Q' + state.qaSeq;
+  }
+
+  function contextEquipmentCode(message) {
+    var explicit = findEquipment(message, false);
+    return explicit ? explicit.equipmentCode : '';
   }
 
   async function runTool(action, message) {
@@ -516,13 +533,13 @@
       return { tool: tool, ok: true, detail: '13 台', render: function (container) { renderEquipment(container, list); } };
     }
     if (tool === 'guide') {
-      var guide = await api('/api/chat', { method: 'POST', body: { sessionId: state.sessionId, message: message, role: 'student', equipmentCode: isGeneralKnowledgeQuery(message) ? "" : state.equipmentCode } });
+      var guide = await api('/api/chat', { method: 'POST', body: { sessionId: state.sessionId, message: message, role: 'student', equipmentCode: contextEquipmentCode(message) } });
       if (guide.tree) {
         return { tool: tool, ok: true, detail: guide.tree.treeId || '', render: function (container) { renderGuide(container, guide.tree); } };
       }
       return { tool: 'fault_qa', ok: true, detail: (guide.citations || []).length + ' 条引用', render: function (container) { renderDiagnosis(container, guide); } };
     }
-    var diagnosis = await api('/api/chat', { method: 'POST', body: { sessionId: state.sessionId, message: message, role: 'student', equipmentCode: isGeneralKnowledgeQuery(message) ? '' : state.equipmentCode } });
+    var diagnosis = await api('/api/chat', { method: 'POST', body: { sessionId: qaSessionId(message), message: message, role: 'student', equipmentCode: contextEquipmentCode(message) } });
     return {
       tool: 'fault_qa', ok: true,
       detail: (diagnosis.citations || []).length + ' 条引用',
@@ -594,9 +611,11 @@
     document.querySelectorAll('#suggestions button').forEach(function (button) {
       button.addEventListener('click', function () { sendMessage(button.getAttribute('data-prompt')); });
     });
-    dom.equipmentSelect.addEventListener('change', function () {
-      state.equipmentCode = dom.equipmentSelect.value;
-    });
+    if (dom.equipmentSelect) {
+      dom.equipmentSelect.addEventListener('change', function () {
+        state.equipmentCode = dom.equipmentSelect.value;
+      });
+    }
     if (dom.clearChatBtn) {
       dom.clearChatBtn.addEventListener('click', function () {
         if (state.busy) return;
@@ -632,17 +651,16 @@
   async function loadEquipment() {
     try {
       state.equipment = await api('/api/equipment');
-      dom.equipmentSelect.textContent = '';
-      state.equipment.forEach(function (equipment) {
-        var option = document.createElement('option');
-        option.value = equipment.equipmentCode;
-        option.textContent = equipment.name + '（' + equipment.equipmentCode + '）';
-        dom.equipmentSelect.appendChild(option);
-      });
-      if (state.equipment.length) {
-        state.equipmentCode = state.equipment[0].equipmentCode;
-        dom.equipmentSelect.value = state.equipmentCode;
+      if (dom.equipmentSelect) {
+        dom.equipmentSelect.textContent = '';
+        state.equipment.forEach(function (equipment) {
+          var option = document.createElement('option');
+          option.value = equipment.equipmentCode;
+          option.textContent = equipment.name + '（' + equipment.equipmentCode + '）';
+          dom.equipmentSelect.appendChild(option);
+        });
       }
+      state.equipmentCode = '';
       dom.sessionMeta.textContent = shortSession(state.sessionId);
     } catch (error) {
       dom.sessionMeta.textContent = '设备加载失败';
