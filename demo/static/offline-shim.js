@@ -1193,6 +1193,13 @@
       query = message + ' ' + slots.symptom;
     }
     var hits = retrieve(query, { category: slots.category, equipmentCode: slots.equipmentCode });
+    if (slots.category && /减速箱|齿轮箱|主轴承|轴承|电机|液压|润滑|油站|传感器|HMI|触摸屏|端子|受潮|浮选|除尘|皮带|给料机|泵|旋流器/.test(message)) {
+      var allHits = retrieve(query, { category: '', equipmentCode: '' });
+      var seen = {};
+      hits.forEach(function (h) { seen[h.entry.id] = h; });
+      allHits.forEach(function (h) { if (!seen[h.entry.id] || h.score > seen[h.entry.id].score) { seen[h.entry.id] = h; } });
+      hits = Object.keys(seen).map(function (k) { return seen[k]; }).sort(function (a, b) { return b.score - a.score; }).slice(0, 5);
+    }
     if (!hits.length || (hits[0].score < QA_MIN_SCORE && (hits[0].vector || 0) < 0.30)) {
       return noHitPayload(sid, slots, message);
     }

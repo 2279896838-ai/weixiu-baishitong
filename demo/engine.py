@@ -1764,6 +1764,15 @@ class Engine:
                 top_k=5,
             )
             fallback_category = False
+            if category and re.search(r"减速箱|齿轮箱|主轴承|轴承|电机|液压|润滑|油站|传感器|HMI|触摸屏|端子|受潮|浮选|除尘|皮带|给料机|泵|旋流器", text):
+                all_hits = self._search(query, category=None, equipment_code="", top_k=5)
+                merged = {h["entry"]["id"]: h for h in hits}
+                for h in all_hits:
+                    hid = h["entry"]["id"]
+                    if hid not in merged or h["score"] > merged[hid]["score"]:
+                        merged[hid] = h
+                hits = sorted(merged.values(), key=lambda h: h["score"], reverse=True)[:5]
+                fallback_category = bool(all_hits)
             if not hits and category:
                 hits = self._search(query, category=None, equipment_code="", top_k=5)
                 fallback_category = bool(hits)
