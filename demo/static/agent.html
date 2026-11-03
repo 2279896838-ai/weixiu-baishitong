@@ -60,33 +60,45 @@
       </form>
     </section>
 
-    <aside class="side-panel">
-      <section class="side-card">
-        <h3>智能体能力</h3>
-        <ul class="tool-list" id="toolList"></ul>
+    <aside class="side-panel" aria-label="智能体侧栏">
+      <section class="side-card accordion is-open" data-accordion>
+        <button class="accordion-head" type="button" aria-expanded="true">
+          <span class="accordion-title">智能体能力</span><span class="accordion-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="accordion-body">
+          <ul class="tool-list" id="toolList"></ul>
+        </div>
       </section>
-      <section class="side-card">
-        <h3>运行信息</h3>
-        <dl class="meta-list">
-          <div><dt>会话</dt><dd id="sessionMeta">—</dd></div>
-          <div><dt>模式</dt><dd id="runMode">—</dd></div>
-          <div><dt>知识库</dt><dd id="kbMeta">—</dd></div>
-          <div><dt>工具调用</dt><dd id="toolCount">0 次</dd></div>
-        </dl>
+      <section class="side-card accordion" data-accordion>
+        <button class="accordion-head" type="button" aria-expanded="false">
+          <span class="accordion-title">运行信息</span><span class="accordion-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="accordion-body">
+          <dl class="meta-list">
+            <div><dt>会话</dt><dd id="sessionMeta">—</dd></div>
+            <div><dt>模式</dt><dd id="runMode">—</dd></div>
+            <div><dt>知识库</dt><dd id="kbMeta">—</dd></div>
+            <div><dt>工具调用</dt><dd id="toolCount">0 次</dd></div>
+          </dl>
+        </div>
       </section>
-      <section class="side-card calc-card">
-        <h3>工艺计算器</h3>
-        <p class="calc-hint">矿浆体积 / 矿浆密度 / 浓密机底流，输入后即时计算</p>
-        <label class="calc-field"><span>计算类型</span>
-          <select id="calcType">
-            <option value="volume">矿浆体积（m³/h）</option>
-            <option value="density">矿浆密度（t/m³）</option>
-            <option value="underflow">浓密机底流流量</option>
-          </select>
-        </label>
-        <div id="calcFields"></div>
-        <button class="btn btn-primary btn-sm calc-btn" id="calcBtn" type="button">计算</button>
-        <div class="calc-result" id="calcResult" hidden></div>
+      <section class="side-card calc-card accordion" data-accordion>
+        <button class="accordion-head" type="button" aria-expanded="false">
+          <span class="accordion-title">工艺计算器</span><span class="accordion-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="accordion-body">
+          <p class="calc-hint">矿浆体积 / 矿浆密度 / 浓密机底流，输入后即时计算</p>
+          <label class="calc-field"><span>计算类型</span>
+            <select id="calcType">
+              <option value="volume">矿浆体积（m³/h）</option>
+              <option value="density">矿浆密度（t/m³）</option>
+              <option value="underflow">浓密机底流流量</option>
+            </select>
+          </label>
+          <div id="calcFields"></div>
+          <button class="btn btn-primary btn-sm calc-btn" id="calcBtn" type="button">计算</button>
+          <div class="calc-result" id="calcResult" hidden></div>
+        </div>
       </section>
       <section class="side-card danger-card">
         <h3>安全优先</h3>

@@ -766,6 +766,29 @@
     }
     result.hidden = false;
   }
+
+  function initAccordions() {
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.accordion'));
+    if (!cards.length) return;
+    cards.forEach(function (card) {
+      var head = card.querySelector('.accordion-head');
+      if (!head) return;
+      head.addEventListener('click', function () {
+        var willOpen = !card.classList.contains('is-open');
+        cards.forEach(function (item) {
+          item.classList.remove('is-open');
+          var btn = item.querySelector('.accordion-head');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
+        });
+        if (willOpen) {
+          card.classList.add('is-open');
+          head.setAttribute('aria-expanded', 'true');
+        }
+        card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      });
+    });
+  }
+
   function initCalculator() {
     var select = byId('calcType');
     if (!select) return;
@@ -798,6 +821,7 @@
     renderToolList();
     bindEvents();
     initCalculator();
+    initAccordions();
     updateCount();
     loadHealth();
     loadEquipment();
