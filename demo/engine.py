@@ -1296,7 +1296,7 @@ class Engine:
             return "CHK"
         if re.search(r"报修|工单|派单|维修单|报障|申请维修|创建工单|结案|回填", low):
             return "WO"
-        if re.search(r"排查|一步步|逐步|引导|怎么查|如何查|故障树|排查树|带我", low):
+        if re.search(r"一步步|逐步|引导|故障树|排查树|带我|进入排查", low):
             return "TRG"
         has_slots = bool(slots.get("symptom") or slots.get("equipmentCode") or slots.get("category"))
         if not has_slots and re.search(

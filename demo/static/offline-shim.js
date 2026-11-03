@@ -1582,7 +1582,7 @@
     if (dangerRule(message)) { return 'DANGER'; }
     if (/点检|检查表|点检表|点检清单|巡检表|日检|周检|月检/.test(low)) { return 'CHK'; }
     if (/报修|工单|派单|维修单|报障|申请维修|创建工单|结案|回填/.test(low)) { return 'WO'; }
-    if (/排查|一步步|逐步|引导|故障树|排查树|带我|怎么查|如何查/.test(low)) { return 'TRG'; }
+    if (/一步步|逐步|引导|故障树|排查树|带我|进入排查/.test(low)) { return 'TRG'; }
     var hasSlots = !!(slots.equipment || slots.equipmentCode || slots.category || slots.symptom);
     if (!hasSlots && /^(你好|您好|hi|hello|嗨|在吗|谢谢|多谢|辛苦了|你是谁|你能做什么|怎么用|使用说明|帮助|菜单)/.test(low)) { return 'CHAT'; }
     if (/天气|股票|写诗|讲个笑话|翻译|编程|写代码|数学题|电影|新闻/.test(low)) { return 'UNKNOWN'; }
