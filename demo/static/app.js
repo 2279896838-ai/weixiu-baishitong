@@ -638,6 +638,7 @@
     var valid = ['qa', 'checklist', 'dashboard', 'workorders', 'knowledge', 'calc', 'agent'];
     if (valid.indexOf(tab) === -1) tab = 'qa';
     state.activeTab = tab;
+    document.body.classList.toggle('qa-active', tab === 'qa');
     dom.tabs.forEach(function (btn) {
       var on = btn.getAttribute('data-tab') === tab;
       btn.classList.toggle('is-active', on);

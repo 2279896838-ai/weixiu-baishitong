@@ -407,3 +407,20 @@ body::before {
 .capability-item span { margin-top: 3px; font-size: 12.5px; font-weight: 700; color: #12395c; }
 .capability-item em { margin-top: 2px; font-style: normal; font-size: 10.5px; color: #7d90a5; }
 @media (max-width: 640px) { .capability-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* 嵌入控制台时让对话区贴满 iframe，输入框始终在视口内 */
+body.embedded { height: 100vh; min-height: 0; overflow: hidden; }
+body.embedded .agent-layout {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+  margin: 6px auto;
+  align-items: stretch;
+  overflow: hidden;
+}
+body.embedded .chat-panel {
+  height: 100%;
+  max-height: none;
+  min-height: 0;
+}
+body.embedded .side-panel { height: 100%; max-height: 100%; overflow-y: auto; }

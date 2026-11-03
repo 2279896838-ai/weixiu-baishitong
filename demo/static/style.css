@@ -2295,3 +2295,20 @@ body::before {
 .hero-metric { transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease; }
 .hero-metric:hover { transform: translateY(-2px); background: rgba(255,255,255,0.11); border-color: rgba(255,255,255,0.24); }
 @media (max-width: 640px) { .hero-status { gap: 7px 10px; font-size: 9.5px; } .hero-band::after { opacity: 0.55; } }
+
+/* 问答页单屏优先：隐藏大 Hero，iframe 填满剩余视口，输入框无需下滑 */
+#panel-qa .hero-band { display: none !important; }
+#panel-qa { padding-top: 0; }
+#panel-qa iframe {
+  height: calc(100vh - 172px) !important;
+  min-height: 460px !important;
+  border-radius: 14px !important;
+}
+body.qa-active .site-footer { display: none !important; }
+body.qa-active .page { padding-bottom: 0; }
+@media (max-height: 760px) {
+  #panel-qa iframe { height: calc(100vh - 165px) !important; min-height: 420px !important; }
+}
+@media (max-width: 640px) {
+  #panel-qa iframe { height: calc(100vh - 190px) !important; min-height: 400px !important; }
+}
