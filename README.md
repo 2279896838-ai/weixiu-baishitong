@@ -63,7 +63,8 @@ docker compose -f docker-compose.prod.yml up -d --build
 | 知识库与案例库 | 控制台第 05 页签：按设备类别/来源检索 107 条知识，支持“只看安全关键”；查看原因、判据、步骤、风险与来源，教师口述案例可追溯 |
 | 工艺计算器 | 控制台第 06 页签 / 智能体右侧：矿浆体积、矿浆密度、浓密机底流、磨机容积本地自算，附公式与说明 |
 | 在线演示（GitHub Pages） | https://2279896838-ai.github.io/weixiu-baishitong/ | 浏览器直接打开，单文件离线演示，无需安装 |
-| 项目方案（报名用） | [deliverables/维修百事通-项目方案.pdf](deliverables/维修百事通-项目方案.pdf) / [.docx](deliverables/维修百事通-项目方案.docx) | 4 页，可直接上传到大赛“项目方案”附件；填写稿见 [design/报名表填写稿.md](design/报名表填写稿.md) |
+| 项目方案（报名用，4 页） | [deliverables/维修百事通-项目方案.pdf](deliverables/维修百事通-项目方案.pdf) / [.docx](deliverables/维修百事通-项目方案.docx) | 4 页精简版，可直接上传到大赛“项目方案”附件 |
+| 项目方案（10 页详细版） | [deliverables/维修百事通-项目方案-10页.pdf](deliverables/维修百事通-项目方案-10页.pdf) / [.docx](deliverables/维修百事通-项目方案-10页.docx) | 10 页，含需求分析、赛题对照、知识库、技术架构、测试、团队、合规与提交清单；填写稿见 [design/报名表填写稿.md](design/报名表填写稿.md) |
 
 > 说明：当前未部署公网固定地址。离线版是单文件 HTML，可上传任意静态托管获得公网链接；本地服务版适合答辩现场；二维码用于同一局域网的多设备体验。二维码中的 IP 以启动窗口显示的地址为准，可运行 python scripts/make-qr.py 重新生成。
 
